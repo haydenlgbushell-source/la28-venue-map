@@ -4,8 +4,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>LA28 Olympic Venues — AOC</title>
-<meta name="description" content="Australian Olympic Committee — LA28 Olympic Games interactive venue map"/>
-<meta name="author" content="Australian Olympic Committee"/>
 <style>
 /* required styles */
 
@@ -727,7 +725,7 @@ html,body{height:100%;font-family:'Inter','Segoe UI',sans-serif;overflow:hidden}
 #sbc{margin-left:auto;font-size:11px;color:#c8d8e0;font-weight:600}
 .leaflet-popup-content-wrapper{border-radius:8px!important;padding:0!important;box-shadow:0 4px 20px rgba(0,0,0,.15)!important;border:1px solid #e2ddd8!important;overflow:hidden}
 .leaflet-popup-content{margin:0!important;width:auto!important}
-.pu{padding:12px 14px;min-width:200px;max-width:260px;font-family:'Inter','Segoe UI',sans-serif}
+.pu{padding:12px 14px;min-width:220px;max-width:320px;font-family:'Inter','Segoe UI',sans-serif;max-height:70vh;overflow-y:auto}
 .put{font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:4px}
 .pun{font-size:13px;font-weight:700;color:#2d3748;margin-bottom:5px}
 .putg{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
@@ -856,6 +854,415 @@ var SHUTTLES=[
   {name:"Olympic Shuttle – Village to Inglewood",coords:[[34.072,-118.450],[34.020,-118.410],[33.954,-118.339]]},
   {name:"Olympic Shuttle – Downtown to Carson and Long Beach",coords:[[34.043,-118.267],[33.964,-118.250],[33.864,-118.261],[33.763,-118.192]]}
 ];
+
+// Competition schedule per venue (Pacific Time, subject to change)
+var SCHEDULE={
+  1:{ // LA Memorial Coliseum
+    sport:"Athletics (Track & Field)",
+    dates:"Jul 18–30",
+    sessions:[
+      {date:"Jul 18 (Day 4)",events:"Heptathlon, Shot Put, 10,000m"},
+      {date:"Jul 19 (Day 5)",events:"100m prelims, Long Jump, Hammer"},
+      {date:"Jul 20 (Day 6)",events:"100m semis/final 🥇, High Jump 🥇"},
+      {date:"Jul 21 (Day 7)",events:"200m prelims, Triple Jump, 400m hurdles"},
+      {date:"Jul 22 (Day 8)",events:"200m final 🥇, Pole Vault 🥇"},
+      {date:"Jul 23 (Day 9)",events:"1500m, 110m hurdles, Discus"},
+      {date:"Jul 24 (Day 10)",events:"400m final 🥇, Javelin 🥇"},
+      {date:"Jul 25 (Day 11)",events:"800m, 4x100m prelims"},
+      {date:"Jul 26 (Day 12)",events:"4x100m final 🥇, 1500m final 🥇"},
+      {date:"Jul 27 (Day 13)",events:"Marathon (men) 🥇, 5000m"},
+      {date:"Jul 28 (Day 14)",events:"4x400m mixed relay 🥇"},
+      {date:"Jul 29 (Day 15)",events:"Marathon (women) 🥇, 4x400m finals 🥇"},
+      {date:"Jul 30 (Day 16)",events:"Closing Ceremony"}
+    ],
+    note:"Also co-hosts Opening Ceremony Jul 14"
+  },
+  2:{ // Exposition Park Stadium
+    sport:"Flag Football · Lacrosse",
+    dates:"Jul 14–29",
+    sessions:[
+      {date:"Jul 14–20",events:"Flag Football group stage"},
+      {date:"Jul 14–22",events:"Lacrosse group stage"},
+      {date:"Jul 24 (Day 10)",events:"Lacrosse semifinals"},
+      {date:"Jul 25 (Day 11)",events:"Flag Football semifinals"},
+      {date:"Jul 27 (Day 13)",events:"Lacrosse bronze & gold 🥇"},
+      {date:"Jul 28 (Day 14)",events:"Flag Football bronze & gold 🥇"}
+    ]
+  },
+  3:{ // LA84 Swim Stadium
+    sport:"Water Polo (prelims)",
+    dates:"Jul 12–20",
+    sessions:[
+      {date:"Jul 12–13 (Days -2/-1)",events:"Water Polo prelims begin"},
+      {date:"Jul 14–20 (Days 0–6)",events:"Water Polo group stage (PT: 11:00–16:30)"}
+    ],
+    note:"Finals move to Long Beach Convention Center"
+  },
+  4:{ // USC Galen Center
+    sport:"Badminton · Rhythmic Gymnastics",
+    dates:"Jul 14–29",
+    sessions:[
+      {date:"Jul 14–22",events:"Badminton group stage"},
+      {date:"Jul 14–25",events:"Rhythmic Gymnastics prelims"},
+      {date:"Jul 23 (Day 9)",events:"Badminton doubles gold 🥇"},
+      {date:"Jul 24 (Day 10)",events:"Badminton singles gold 🥇"},
+      {date:"Jul 26 (Day 12)",events:"Rhythmic Gymnastics individual all-around 🥇"},
+      {date:"Jul 28 (Day 14)",events:"Rhythmic Gymnastics group 🥇"}
+    ]
+  },
+  5:{ // Crypto.com Arena
+    sport:"Artistic Gymnastics",
+    dates:"Jul 14–27",
+    sessions:[
+      {date:"Jul 14–16 (Days 0–2)",events:"Gymnastics qualifying (PT: 10:00–21:00)"},
+      {date:"Jul 17 (Day 3)",events:"Men's team final 🥇"},
+      {date:"Jul 18 (Day 4)",events:"Women's team final 🥇"},
+      {date:"Jul 20 (Day 6)",events:"Men's all-around final 🥇"},
+      {date:"Jul 21 (Day 7)",events:"Women's all-around final 🥇"},
+      {date:"Jul 23–27",events:"Apparatus finals (Vault, Bars, Beam, Floor) 🥇"}
+    ]
+  },
+  6:{ // LA Convention Center
+    sport:"Fencing · Judo · Table Tennis · Taekwondo · Wrestling",
+    dates:"Jul 14–30",
+    sessions:[
+      {date:"Jul 14–19",events:"Judo (all weight categories) 🥇"},
+      {date:"Jul 14–20",events:"Fencing individual events 🥇"},
+      {date:"Jul 14–24",events:"Table Tennis prelims & singles 🥇"},
+      {date:"Jul 14–20",events:"Taekwondo (all weight classes) 🥇"},
+      {date:"Jul 20–26",events:"Wrestling (Freestyle & Greco-Roman) 🥇"},
+      {date:"Jul 22–25",events:"Fencing team events 🥇"},
+      {date:"Jul 27–29",events:"Table Tennis team events 🥇"}
+    ]
+  },
+  7:{ // Peacock Theater
+    sport:"Weightlifting",
+    dates:"Jul 14–22",
+    sessions:[
+      {date:"Jul 14–22 (Days 0–8)",events:"All weight categories — multiple sessions daily 🥇"},
+    ],
+    note:"PT sessions typically 10:00–14:00 and 17:00–21:00"
+  },
+  8:{ // DTLA Arena
+    sport:"Artistic Gymnastics (some sessions) · Trampoline",
+    dates:"Jul 14–20",
+    sessions:[
+      {date:"Jul 14–16",events:"Gymnastics qualifying overflow sessions"},
+      {date:"Jul 19 (Day 5)",events:"Trampoline Gymnastics — women's final 🥇"},
+      {date:"Jul 20 (Day 6)",events:"Trampoline Gymnastics — men's final 🥇"}
+    ]
+  },
+  9:{ // Dodger Stadium
+    sport:"Baseball / Softball",
+    dates:"Jul 13–30",
+    sessions:[
+      {date:"Jul 13 (Day -1)",events:"Baseball opening round (14:00 & 22:00 PT)"},
+      {date:"Jul 14–23",events:"Baseball & Softball group stage"},
+      {date:"Jul 24–26",events:"Baseball & Softball quarterfinals & semis"},
+      {date:"Jul 28 (Day 14)",events:"Softball bronze & gold 🥇"},
+      {date:"Jul 29 (Day 15)",events:"Baseball bronze & gold 🥇"}
+    ]
+  },
+  10:{ // Riviera Country Club
+    sport:"Golf",
+    dates:"Jul 17–27",
+    sessions:[
+      {date:"Jul 17–20 (Days 3–6)",events:"Men's individual stroke play (72 holes)"},
+      {date:"Jul 23 (Day 9)",events:"Mixed team four-ball (13:00 PT)"},
+      {date:"Jul 24 (Day 10)",events:"Mixed team foursomes (11:00 PT)"},
+      {date:"Jul 24–27",events:"Women's individual stroke play (72 holes)"},
+      {date:"Jul 20 (Day 6)",events:"Men's individual gold medal 🥇"},
+      {date:"Jul 27 (Day 13)",events:"Women's individual gold medal 🥇"},
+      {date:"Jul 27 (Day 13)",events:"Mixed team gold medal 🥇"}
+    ]
+  },
+  11:{ // Venice Beach
+    sport:"Beach Volleyball · Triathlon",
+    dates:"Jul 14–30",
+    sessions:[
+      {date:"Jul 14–15 (Days 0–1)",events:"Triathlon individual start (women Jul 14, men Jul 15)"},
+      {date:"Jul 14–23",events:"Beach Volleyball pool phase"},
+      {date:"Jul 24–25 (Days 10–11)",events:"Beach Volleyball quarterfinals"},
+      {date:"Jul 27 (Day 13)",events:"Beach Volleyball women's gold 🥇"},
+      {date:"Jul 28 (Day 14)",events:"Beach Volleyball men's gold 🥇"},
+      {date:"Jul 29 (Day 15)",events:"Triathlon mixed relay 🥇"}
+    ]
+  },
+  12:{ // SoFi Stadium
+    sport:"Swimming",
+    dates:"Jul 14–28",
+    sessions:[
+      {date:"Jul 14 (Day 0)",events:"Opening Ceremony (co-host) + Swimming heats begin"},
+      {date:"Jul 14–28",events:"Heats: 10:00–13:00 PT · Finals: 19:00–21:30 PT"},
+      {date:"Jul 14",events:"400m IM, 400m Freestyle heats"},
+      {date:"Jul 15 (Day 1)",events:"400m IM 🥇, 400m Free 🥇"},
+      {date:"Jul 16–28",events:"All events across 17 days — 35 gold medals total 🥇"}
+    ],
+    note:"Largest swimming venue in Olympic history (38,000 capacity)"
+  },
+  13:{ // Intuit Dome
+    sport:"Basketball",
+    dates:"Jul 12–30",
+    sessions:[
+      {date:"Jul 12 (Day -2)",events:"Women's group play (15:00 & 21:00 PT)"},
+      {date:"Jul 13 (Day -1)",events:"Men's group play (15:00 PT)"},
+      {date:"Jul 14–21",events:"Men's & Women's group stage"},
+      {date:"Jul 23 (Day 9)",events:"Women's quarterfinals"},
+      {date:"Jul 24–25 (Days 10–11)",events:"Men's quarterfinals"},
+      {date:"Jul 26–27",events:"Semifinals"},
+      {date:"Jul 29 (Day 15)",events:"Women's bronze & gold 🥇"},
+      {date:"Jul 30 (Day 16)",events:"Men's bronze & gold 🥇"}
+    ]
+  },
+  14:{ // Kia Forum
+    sport:"Boxing",
+    dates:"Jul 14–30",
+    sessions:[
+      {date:"Jul 14–25",events:"Preliminary rounds (all weight classes)"},
+      {date:"Jul 26–27",events:"Quarterfinals"},
+      {date:"Jul 28 (Day 14)",events:"Semifinals"},
+      {date:"Jul 29–30",events:"Finals — all weight classes 🥇"}
+    ]
+  },
+  15:{ // Dignity Health Sports Park
+    sport:"Rugby Sevens · Tennis",
+    dates:"Jul 12–28",
+    sessions:[
+      {date:"Jul 12–13 (Days -2/-1)",events:"Rugby Sevens Women's pool stage (13:00 & 19:00 PT)"},
+      {date:"Jul 14 (Day 0)",events:"Rugby Sevens Men's pool stage"},
+      {date:"Jul 15 (Day 1)",events:"Rugby Sevens Women's medal rounds 🥇"},
+      {date:"Jul 16 (Day 2)",events:"Rugby Sevens Men's medal rounds 🥇"},
+      {date:"Jul 17–26",events:"Tennis all rounds (singles & doubles)"},
+      {date:"Jul 26 (Day 12)",events:"Tennis mixed doubles final 🥇"},
+      {date:"Jul 27 (Day 13)",events:"Tennis women's singles final 🥇"},
+      {date:"Jul 28 (Day 14)",events:"Tennis men's singles final 🥇"}
+    ]
+  },
+  16:{ // VELO Sports Center
+    sport:"Track Cycling",
+    dates:"Jul 25–30",
+    sessions:[
+      {date:"Jul 25 (Day 11)",events:"Team Sprint qualifying (12:00 PT), Team Sprint finals 🥇"},
+      {date:"Jul 26 (Day 12)",events:"Team Pursuit qualifying & finals 🥇, Sprint qualifying"},
+      {date:"Jul 27 (Day 13)",events:"Sprint finals 🥇, Keirin qualifying"},
+      {date:"Jul 28 (Day 14)",events:"Omnium 🥇, Keirin finals 🥇"},
+      {date:"Jul 29 (Day 15)",events:"Madison 🥇, Points Race 🥇"},
+      {date:"Jul 30 (Day 16)",events:"Sprint final 🥇"}
+    ]
+  },
+  17:{ // LA Galaxy Training Fields
+    sport:"Hockey (Field)",
+    dates:"Jul 12–28",
+    sessions:[
+      {date:"Jul 12 (Day -2)",events:"Men's group play (12:00 & 20:00 PT)"},
+      {date:"Jul 13 (Day -1)",events:"Women's group play (12:00 & 20:00 PT)"},
+      {date:"Jul 14–21",events:"Group stage — men's & women's"},
+      {date:"Jul 23–24",events:"Play-in & quarterfinals"},
+      {date:"Jul 26 (Day 12)",events:"Semifinals"},
+      {date:"Jul 27 (Day 13)",events:"Women's bronze & gold 🥇"},
+      {date:"Jul 28 (Day 14)",events:"Men's bronze & gold 🥇"}
+    ]
+  },
+  18:{ // Long Beach Arena
+    sport:"Handball",
+    dates:"Jul 12–30",
+    sessions:[
+      {date:"Jul 12 (Day -2)",events:"Men's group play (12:00, 17:00, 22:00 PT)"},
+      {date:"Jul 13 (Day -1)",events:"Women's group play"},
+      {date:"Jul 14–23",events:"Group stage — men's & women's"},
+      {date:"Jul 25 (Day 11)",events:"Men's semifinals"},
+      {date:"Jul 26 (Day 12)",events:"Women's semifinals"},
+      {date:"Jul 28 (Day 14)",events:"Women's bronze & gold 🥇"},
+      {date:"Jul 29 (Day 15)",events:"Men's bronze & gold 🥇"}
+    ]
+  },
+  19:{ // Long Beach Convention Center
+    sport:"Artistic Swimming · Water Polo",
+    dates:"Jul 20–30",
+    sessions:[
+      {date:"Jul 20–25",events:"Water Polo quarterfinals & semis"},
+      {date:"Jul 25 (Day 11)",events:"Artistic Swimming — Women's Duet Technical (11:00 PT)"},
+      {date:"Jul 26 (Day 12)",events:"Artistic Swimming — Women's Duet Free 🥇"},
+      {date:"Jul 27 (Day 13)",events:"Water Polo women's final 🥇"},
+      {date:"Jul 28 (Day 14)",events:"Artistic Swimming — Team Technical"},
+      {date:"Jul 29 (Day 15)",events:"Artistic Swimming — Team Free 🥇"},
+      {date:"Jul 30 (Day 16)",events:"Water Polo men's final 🥇"}
+    ]
+  },
+  20:{ // Long Beach Marine Stadium
+    sport:"Canoe Sprint · Rowing",
+    dates:"Jul 14–28",
+    sessions:[
+      {date:"Jul 14–21",events:"Rowing heats, repechages & semifinals"},
+      {date:"Jul 22–24 (Days 8–10)",events:"Rowing A/B finals — all events 🥇"},
+      {date:"Jul 25 (Day 11)",events:"Canoe Sprint — K2/C1 heats & quarterfinals (12:00 PT)"},
+      {date:"Jul 26–27",events:"Canoe Sprint semifinals"},
+      {date:"Jul 28 (Day 14)",events:"Canoe Sprint finals 🥇"}
+    ]
+  },
+  21:{ // Belmont Veterans Memorial Pier
+    sport:"Sailing",
+    dates:"Jul 14–29",
+    sessions:[
+      {date:"Jul 14–26",events:"Racing — all classes (ILCA, 470, Nacra 17, iQFOiL, Formula Kite)"},
+      {date:"Jul 27–29",events:"Medal races — all classes 🥇"},
+    ],
+    note:"PT times vary by tide & wind conditions"
+  },
+  22:{ // Long Beach Waterfront
+    sport:"Marathon Swimming · Triathlon",
+    dates:"Jul 16–29",
+    sessions:[
+      {date:"Jul 16 (Day 2)",events:"Triathlon — Women's individual finish"},
+      {date:"Jul 17 (Day 3)",events:"Triathlon — Men's individual finish"},
+      {date:"Jul 24 (Day 10)",events:"Marathon Swimming — Women's 10km 🥇 (07:30 PT)"},
+      {date:"Jul 25 (Day 11)",events:"Coastal Rowing — Beach Sprint 🥇"},
+      {date:"Jul 26 (Day 12)",events:"Marathon Swimming — Men's 10km 🥇 (07:30 PT)"},
+      {date:"Jul 29 (Day 15)",events:"Triathlon — Mixed relay 🥇"}
+    ]
+  },
+  23:{ // Rose Bowl Stadium
+    sport:"Football (Soccer)",
+    dates:"Jul 19–30",
+    sessions:[
+      {date:"Jul 10–21",events:"Group stage (various host cities + Rose Bowl)"},
+      {date:"Jul 22–25",events:"Round of 16 & quarterfinals"},
+      {date:"Jul 26–27",events:"Semifinals"},
+      {date:"Jul 29 (Day 15)",events:"Women's bronze medal match"},
+      {date:"Jul 29 (Day 15)",events:"Men's bronze medal match"},
+      {date:"Jul 30 (Day 16)",events:"Women's gold medal 🥇"},
+      {date:"Jul 30 (Day 16)",events:"Men's gold medal 🥇"}
+    ],
+    note:"Final stages progressively move west toward Rose Bowl"
+  },
+  24:{ // Rose Bowl Aquatics Center
+    sport:"Diving",
+    dates:"Jul 14–29",
+    sessions:[
+      {date:"Jul 14–17",events:"Synchronized events — prelims & finals 🥇"},
+      {date:"Jul 14",events:"Mixed synchro 10m platform 🥇"},
+      {date:"Jul 15",events:"Women's synchro 3m springboard 🥇"},
+      {date:"Jul 16",events:"Men's synchro 10m platform 🥇"},
+      {date:"Jul 17",events:"Women's synchro 10m platform 🥇"},
+      {date:"Jul 20–29",events:"Individual events — prelims through finals 🥇"}
+    ]
+  },
+  25:{ // Sepulveda Basin
+    sport:"BMX · 3x3 Basketball · Skateboarding · Modern Pentathlon",
+    dates:"Jul 14–28",
+    sessions:[
+      {date:"Jul 14–16",events:"3x3 Basketball — Men's & Women's pool stage"},
+      {date:"Jul 17 (Day 3)",events:"BMX Racing — qualifying rounds"},
+      {date:"Jul 18 (Day 4)",events:"BMX Freestyle — Park qualifying"},
+      {date:"Jul 18 (Day 4)",events:"Skateboarding Street — Women's 🥇"},
+      {date:"Jul 19 (Day 5)",events:"BMX Racing finals 🥇"},
+      {date:"Jul 19 (Day 5)",events:"Skateboarding Street — Men's 🥇"},
+      {date:"Jul 20 (Day 6)",events:"BMX Freestyle — Park finals 🥇"},
+      {date:"Jul 21 (Day 7)",events:"Skateboarding Park — Women's 🥇"},
+      {date:"Jul 22 (Day 8)",events:"Skateboarding Park — Men's 🥇"},
+      {date:"Jul 21–22",events:"3x3 Basketball — quarterfinals & finals 🥇"},
+      {date:"Jul 24–26",events:"Modern Pentathlon — all events 🥇"}
+    ]
+  },
+  26:{ // Universal Studios Lot
+    sport:"Squash",
+    dates:"Jul 14–28",
+    sessions:[
+      {date:"Jul 14–22",events:"Squash — individual rounds (men's & women's)"},
+      {date:"Jul 23–24",events:"Squash — semifinals"},
+      {date:"Jul 25 (Day 11)",events:"Squash — Women's bronze & gold 🥇"},
+      {date:"Jul 26 (Day 12)",events:"Squash — Men's bronze & gold 🥇"},
+      {date:"Jul 27–28",events:"Mixed doubles semifinals & finals 🥇"}
+    ],
+    note:"Olympic debut of squash"
+  },
+  27:{ // UCLA Campus
+    sport:"Volleyball (Indoor)",
+    dates:"Jul 14–30",
+    sessions:[
+      {date:"Jul 14–23",events:"Men's & Women's group stage (Pauley Pavilion)"},
+      {date:"Jul 24–26",events:"Quarterfinals & semifinals"},
+      {date:"Jul 28 (Day 14)",events:"Women's bronze & gold 🥇"},
+      {date:"Jul 29 (Day 15)",events:"Men's bronze & gold 🥇"}
+    ]
+  },
+  28:{ // Honda Center
+    sport:"Volleyball (Indoor)",
+    dates:"Jul 14–23",
+    sessions:[
+      {date:"Jul 14–23",events:"Men's & Women's group stage — overflow sessions"},
+    ],
+    note:"Group stage only — finals at UCLA"
+  },
+  29:{ // Pomona Fairplex
+    sport:"Cricket",
+    dates:"Jul 12–26",
+    sessions:[
+      {date:"Jul 12 (Day -2)",events:"Women's group play (12:00 & 21:00 PT)"},
+      {date:"Jul 13 (Day -1)",events:"Women's group play continues"},
+      {date:"Jul 14–21",events:"Men's & Women's group stage"},
+      {date:"Jul 22–23",events:"Semifinals"},
+      {date:"Jul 25 (Day 11)",events:"Women's bronze & gold 🥇"},
+      {date:"Jul 26 (Day 12)",events:"Men's bronze & gold 🥇"}
+    ],
+    note:"Olympic debut of cricket (T20 format)"
+  },
+  30:{ // Santa Anita Park
+    sport:"Equestrian",
+    dates:"Jul 17–27",
+    sessions:[
+      {date:"Jul 17–19",events:"Dressage — Grand Prix & Grand Prix Special"},
+      {date:"Jul 20 (Day 6)",events:"Dressage — Grand Prix Freestyle 🥇"},
+      {date:"Jul 21–23",events:"Eventing — Dressage & Cross Country"},
+      {date:"Jul 24 (Day 10)",events:"Dressage — Individual final 🥇"},
+      {date:"Jul 24",events:"Eventing — Show Jumping 🥇"},
+      {date:"Jul 25–27",events:"Jumping — individual & team rounds 🥇"}
+    ]
+  },
+  31:{ // South El Monte
+    sport:"Shooting (Shotgun)",
+    dates:"Jul 14–21",
+    sessions:[
+      {date:"Jul 14–16",events:"Trap — Men's & Women's qualification"},
+      {date:"Jul 17 (Day 3)",events:"Trap — Men's final 🥇, Women's final 🥇"},
+      {date:"Jul 18–20",events:"Skeet — Men's & Women's qualification"},
+      {date:"Jul 21 (Day 7)",events:"Skeet — Men's final 🥇, Women's final 🥇"},
+      {date:"Jul 20–21",events:"Trap Mixed Team 🥇, Skeet Mixed Team 🥇"}
+    ]
+  },
+  32:{ // Trestles Beach
+    sport:"Surfing",
+    dates:"Jul 17–27",
+    sessions:[
+      {date:"Jul 17–22",events:"Surfing — Opening rounds (tide-dependent, ~07:00 PT)"},
+      {date:"Jul 23–25",events:"Quarterfinals & semifinals"},
+      {date:"Jul 26 (Day 12)",events:"Women's final 🥇"},
+      {date:"Jul 27 (Day 13)",events:"Men's final 🥇"}
+    ],
+    note:"Schedule tide & swell dependent. Selected for most consistent waves in SoCal."
+  },
+  33:{ // Lake Perris
+    sport:"Canoe Slalom",
+    dates:"Jul 14–22",
+    sessions:[
+      {date:"Jul 14–16",events:"C1 & K1 — training & heats"},
+      {date:"Jul 17 (Day 3)",events:"Canoe Single (C1) finals 🥇"},
+      {date:"Jul 18 (Day 4)",events:"Kayak Single (K1) finals 🥇"},
+      {date:"Jul 19–21",events:"Kayak Cross & Canoe Cross heats"},
+      {date:"Jul 22 (Day 8)",events:"Kayak Cross 🥇 & Canoe Cross 🥇 finals"}
+    ]
+  },
+  34:{ // Galway Downs
+    sport:"Equestrian (overflow)",
+    dates:"Jul 17–24",
+    sessions:[
+      {date:"Jul 17–19",events:"Eventing — Dressage phase"},
+      {date:"Jul 20 (Day 6)",events:"Eventing — Cross Country"},
+      {date:"Jul 24 (Day 10)",events:"Eventing — Show Jumping 🥇"}
+    ]
+  }
+};
+
 var ZC={};
 ZONE_GROUPS.forEach(function(g){g.zones.forEach(function(z){ZC[z]=g.color;});});
 var TLAB={stadium:"Stadium",arena:"Arena",aquatics:"Aquatics",outdoor:"Outdoor",convention:"Convention"};
@@ -902,7 +1309,22 @@ VENUES.forEach(function(v){
   var c=ZC[v.zone]||"#64748b";
   var m=L.marker([v.lat,v.lng],{icon:mkIcon(v,false)});
   var sports=v.sports.map(function(s){return "<div>\u00B7 "+s+"</div>";}).join("");
-  m.bindPopup('<div class="pu"><div class="put" style="color:'+c+'">'+TLAB[v.type]+'</div><div class="pun">'+v.name+'</div><div class="putg"><span class="ptg" style="background:'+c+'20;color:'+c+'">'+v.zone+'</span></div><div class="pus">'+sports+'</div></div>',{maxWidth:280});
+  var sch=SCHEDULE[v.id];
+  var schHtml="";
+  if(sch){
+    schHtml+='<div style="border-top:1px solid #e2ddd8;margin:8px 0 6px;padding-top:4px">';
+    schHtml+='<div style="font-size:9px;font-weight:700;letter-spacing:1.4px;color:#a0aec0;text-transform:uppercase;margin-bottom:5px">Competition Schedule</div>';
+    schHtml+='<div style="font-size:10px;font-weight:600;color:'+c+';margin-bottom:5px">'+sch.dates+' (Pacific Time)</div>';
+    var maxS=Math.min(sch.sessions.length,4);
+    for(var si=0;si<maxS;si++){
+      var sess=sch.sessions[si];
+      schHtml+='<div style="margin-bottom:4px"><div style="font-size:10px;font-weight:600;color:#2d3748">'+sess.date+'</div><div style="font-size:10px;color:#718096">'+sess.events+'</div></div>';
+    }
+    if(sch.sessions.length>4){schHtml+='<div style="font-size:10px;color:#a0aec0;font-style:italic">+'+( sch.sessions.length-4)+' more sessions</div>';}
+    if(sch.note){schHtml+='<div style="font-size:10px;color:#a0aec0;font-style:italic;margin-top:4px">'+sch.note+'</div>';}
+    schHtml+="</div>";
+  }
+  m.bindPopup('<div class="pu"><div class="put" style="color:'+c+'">'+TLAB[v.type]+'</div><div class="pun">'+v.name+'</div><div class="putg"><span class="ptg" style="background:'+c+'20;color:'+c+'">'+v.zone+'</span></div><div class="pus">'+sports+'</div>'+schHtml+'</div>',{maxWidth:320});
   m.on('click',function(){selVenue(v.id);});
   m.addTo(mLG);
   mks[v.id]=m;
@@ -956,7 +1378,21 @@ function selVenue(id){
   document.getElementById('snm').textContent=v.name;
   var zt=document.getElementById('sztg');
   zt.textContent=v.zone;zt.style.background=c+'18';zt.style.color=c;
-  document.getElementById('sspt').innerHTML=v.sports.map(function(s){return '<div>'+s+'</div>';}).join('');
+  var schData=SCHEDULE[v.id];
+  var sideSchHtml='';
+  if(schData){
+    sideSchHtml+='<div style="border-top:1px solid #e2ddd8;margin:8px 0 4px;padding-top:6px">';
+    sideSchHtml+='<div style="font-size:9px;font-weight:700;letter-spacing:1.4px;color:#a0aec0;text-transform:uppercase;margin-bottom:5px">Schedule</div>';
+    sideSchHtml+='<div style="font-size:10px;font-weight:600;color:'+c+';margin-bottom:4px">'+schData.dates+'</div>';
+    var ms2=Math.min(schData.sessions.length,3);
+    for(var si2=0;si2<ms2;si2++){
+      var s2=schData.sessions[si2];
+      sideSchHtml+='<div style="margin-bottom:3px;font-size:10px"><span style="font-weight:600;color:#2d3748">'+s2.date.split(' ')[0]+' '+s2.date.split(' ')[1]+'</span><br><span style="color:#718096">'+s2.events+'</span></div>';
+    }
+    if(schData.sessions.length>3){sideSchHtml+='<div style="font-size:10px;color:#a0aec0">+'+( schData.sessions.length-3)+' more</div>';}
+    sideSchHtml+='</div>';
+  }
+  document.getElementById('sspt').innerHTML=v.sports.map(function(s){return '<div>'+s+'</div>';}).join('')+sideSchHtml;
   document.getElementById('selinn').style.borderLeftColor=c;
   document.getElementById('selcard').className='show';
   document.getElementById('sdv').style.display='';
