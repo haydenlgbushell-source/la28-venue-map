@@ -2546,7 +2546,7 @@ function buildVL(venues){
     d.innerHTML='<div class="vn" style="background:'+c+'18;border:1.5px solid '+c+'55;color:'+c+'">'+v.id+'</div><div class="vi"><div class="vnm">'+v.name+'</div><span class="vtg" style="background:'+c+'15;color:'+c+'">'+v.zone+'</span><div class="vsp">'+sp+'</div></div>';
     d.onmouseenter=function(){if(!this.classList.contains('sel'))this.style.background='#f7f4f0';};
     d.onmouseleave=function(){if(!this.classList.contains('sel'))this.style.background='transparent';};
-    d.onclick=function(){selVenue(v.id);mks[v.id].openPopup();};
+    d.onclick=function(){selVenue(v.id);openVenueCard(v);};
     el.appendChild(d);
   });
 }
@@ -3132,7 +3132,7 @@ function renderFavourites(){
       '<button onclick="event.stopPropagation();toggleFav('+vid+')" style="background:none;border:none;cursor:pointer;font-size:12px;color:#e8a827">★</button>';
     d.onclick=function(){
       map.flyTo([v.lat,v.lng],14,{duration:0.8});
-      mks[v.id].openPopup();
+      openVenueCard(v);
     };
     el.appendChild(d);
   });
@@ -3230,7 +3230,7 @@ function shareRoute(venueId){
   if(rid){
     setTimeout(function(){
       var v=VENUES.find(function(x){return x.id===parseInt(rid);});
-      if(v){map.flyTo([v.lat,v.lng],14,{duration:1});mks[v.id].openPopup();}
+      if(v){map.flyTo([v.lat,v.lng],14,{duration:1});setTimeout(function(){openVenueCard(v);},1200);}
     },1500);
   }
 })();
