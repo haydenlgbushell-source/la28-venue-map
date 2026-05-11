@@ -3278,41 +3278,58 @@ window.addEventListener('beforeprint',function(){
 
 
 var VENUE_META={
-  1:{cap:"77,500",surf:"Track & natural grass",yr:1923,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/LA_Memorial_Coliseum_2012.jpg/640px-LA_Memorial_Coliseum_2012.jpg"},
-  2:{cap:"22,000",surf:"Natural grass",yr:2022,img:""},
-  3:{cap:"5,000",surf:"50m outdoor pool",yr:1984,img:""},
-  4:{cap:"10,258",surf:"Indoor hardwood",yr:2006,img:""},
-  5:{cap:"20,000",surf:"Indoor gymnastics",yr:1999,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Crypto_dot_com_Arena.jpg/640px-Crypto_dot_com_Arena.jpg"},
-  6:{cap:"720k sqft",surf:"Convention halls",yr:1971,img:""},
-  7:{cap:"18,000",surf:"Indoor",yr:1999,img:""},
-  8:{cap:"19,000",surf:"Indoor",yr:2019,img:""},
-  9:{cap:"56,000",surf:"Natural grass",yr:1962,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Dodger_Stadium_2.jpg/640px-Dodger_Stadium_2.jpg"},
-  10:{cap:"18 holes",surf:"Championship links",yr:1926,img:""},
-  11:{cap:"Open beach",surf:"Sand & ocean",yr:1900,img:""},
-  12:{cap:"70,240",surf:"Retractable roof",yr:2020,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/SoFi_Stadium.jpg/640px-SoFi_Stadium.jpg"},
-  13:{cap:"18,000",surf:"Indoor hardwood",yr:2024,img:""},
-  14:{cap:"17,505",surf:"Indoor",yr:1967,img:""},
-  15:{cap:"27,000",surf:"Natural grass",yr:2003,img:""},
-  16:{cap:"2,500",surf:"250m indoor velodrome",yr:2012,img:""},
-  17:{cap:"8,000",surf:"Astroturf",yr:1999,img:""},
-  18:{cap:"13,600",surf:"Indoor",yr:1978,img:""},
-  19:{cap:"400k sqft",surf:"Convention halls",yr:1978,img:""},
-  20:{cap:"Open water",surf:"2km rowing course",yr:1925,img:""},
-  21:{cap:"Open water",surf:"Ocean sailing",yr:1933,img:""},
-  22:{cap:"Open water",surf:"Ocean waterfront",yr:1950,img:""},
-  23:{cap:"91,136",surf:"Natural grass",yr:1922,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Rose_Bowl_Pasadena.jpg/640px-Rose_Bowl_Pasadena.jpg"},
-  24:{cap:"2,500",surf:"3m/10m diving",yr:2020,img:""},
-  25:{cap:"Open air",surf:"Dirt/concrete park",yr:1990,img:""},
-  26:{cap:"3,500",surf:"Glass-back courts",yr:2028,img:""},
-  27:{cap:"13,800",surf:"Indoor hardwood",yr:1965,img:""},
-  28:{cap:"18,336",surf:"Indoor hardwood",yr:1993,img:""},
-  29:{cap:"40,000+",surf:"Grass",yr:1922,img:""},
-  30:{cap:"26,000",surf:"Race course turf",yr:1934,img:""},
-  31:{cap:"Open range",surf:"Clay/grass",yr:1990,img:""},
-  32:{cap:"Open beach",surf:"Ocean waves",yr:1900,img:""},
-  33:{cap:"Open water",surf:"Whitewater course",yr:2010,img:""},
-  34:{cap:"Open course",surf:"Cross country",yr:2000,img:""}
+  1:{cap:"77,500",surf:"Track & natural grass",yr:1923,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/LA_Memorial_Coliseum_2012.jpg/640px-LA_Memorial_Coliseum_2012.jpg",wiki:"Los Angeles Memorial Coliseum"},
+  2:{cap:"22,000",surf:"Natural grass",yr:2022,img:"",wiki:"BMO Stadium"},
+  3:{cap:"5,000",surf:"50m outdoor pool",yr:1984,img:"",wiki:"John C. Argue Swim Stadium"},
+  4:{cap:"10,258",surf:"Indoor hardwood",yr:2006,img:"",wiki:"Galen Center"},
+  5:{cap:"20,000",surf:"Indoor gymnastics",yr:1999,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Crypto_dot_com_Arena.jpg/640px-Crypto_dot_com_Arena.jpg",wiki:"Crypto.com Arena"},
+  6:{cap:"720k sq ft",surf:"Convention halls",yr:1971,img:"",wiki:"Los Angeles Convention Center"},
+  7:{cap:"18,000",surf:"Indoor",yr:1999,img:"",wiki:"Peacock Theater (Los Angeles)"},
+  8:{cap:"19,000",surf:"Indoor",yr:2019,img:"",wiki:"Crypto.com Arena"},
+  9:{cap:"56,000",surf:"Natural grass",yr:1962,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Dodger_Stadium_2.jpg/640px-Dodger_Stadium_2.jpg",wiki:"Dodger Stadium"},
+  10:{cap:"18 holes",surf:"Championship links",yr:1926,img:"",wiki:"Riviera Country Club"},
+  11:{cap:"Open beach",surf:"Sand & ocean",yr:1900,img:"",wiki:"Venice Beach"},
+  12:{cap:"70,240",surf:"Retractable roof",yr:2020,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/SoFi_Stadium.jpg/640px-SoFi_Stadium.jpg",wiki:"SoFi Stadium"},
+  13:{cap:"18,000",surf:"Indoor hardwood",yr:2024,img:"",wiki:"Intuit Dome"},
+  14:{cap:"17,505",surf:"Indoor",yr:1967,img:"",wiki:"Kia Forum"},
+  15:{cap:"27,000",surf:"Natural grass",yr:2003,img:"",wiki:"Dignity Health Sports Park"},
+  16:{cap:"2,500",surf:"250m indoor velodrome",yr:2012,img:"",wiki:"Velo Sports Center"},
+  17:{cap:"8,000",surf:"Astroturf",yr:1999,img:"",wiki:"Dignity Health Sports Park"},
+  18:{cap:"13,600",surf:"Indoor",yr:1978,img:"",wiki:"Long Beach Arena"},
+  19:{cap:"400k sq ft",surf:"Convention halls",yr:1978,img:"",wiki:"Long Beach Convention and Entertainment Center"},
+  20:{cap:"Open water",surf:"2km rowing course",yr:1925,img:"",wiki:"Long Beach Marine Stadium"},
+  21:{cap:"Open water",surf:"Ocean sailing",yr:1933,img:"",wiki:"Belmont Veterans Memorial Pier"},
+  22:{cap:"Open water",surf:"Ocean waterfront",yr:1950,img:"",wiki:"Long Beach, California"},
+  23:{cap:"91,136",surf:"Natural grass",yr:1922,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Rose_Bowl_Pasadena.jpg/640px-Rose_Bowl_Pasadena.jpg",wiki:"Rose Bowl Stadium"},
+  24:{cap:"2,500",surf:"3m/10m diving platforms",yr:2020,img:"",wiki:"Rose Bowl Aquatics Center"},
+  25:{cap:"Open air",surf:"Dirt/concrete park",yr:1990,img:"",wiki:"Sepulveda Basin Recreation Area"},
+  26:{cap:"3,500",surf:"Glass-back courts",yr:2028,img:"",wiki:"Universal Studios Hollywood"},
+  27:{cap:"13,800",surf:"Indoor hardwood",yr:1965,img:"",wiki:"Pauley Pavilion"},
+  28:{cap:"18,336",surf:"Indoor hardwood",yr:1993,img:"",wiki:"Honda Center"},
+  29:{cap:"40,000+",surf:"Grass",yr:1922,img:"",wiki:"Pomona Fairplex"},
+  30:{cap:"26,000",surf:"Race course turf",yr:1934,img:"",wiki:"Santa Anita Park"},
+  31:{cap:"Open range",surf:"Clay/grass",yr:1990,img:"",wiki:""},
+  32:{cap:"Open beach",surf:"Ocean waves",yr:1900,img:"",wiki:"Trestles (surfing)"},
+  33:{cap:"Open water",surf:"Whitewater course",yr:2010,img:"",wiki:"Lake Perris"},
+  34:{cap:"Open course",surf:"Cross country",yr:2000,img:"",wiki:""}
 };
+
+// ── Wikipedia image fetcher (client-side, avoids 403) ─────────────────────
+var wikiImgCache={};
+function fetchWikiImage(vid,wikiTitle,cb){
+  if(!wikiTitle){cb(null);return;}
+  if(wikiImgCache[vid]!==undefined){cb(wikiImgCache[vid]);return;}
+  var url='https://en.wikipedia.org/w/api.php?action=query&titles='+encodeURIComponent(wikiTitle)+
+    '&prop=pageimages&pithumbsize=640&format=json&origin=*';
+  fetch(url).then(function(r){return r.json();}).then(function(d){
+    var pages=d.query&&d.query.pages;
+    var img=null;
+    if(pages)Object.values(pages).forEach(function(p){if(p.thumbnail&&p.thumbnail.source)img=p.thumbnail.source;});
+    wikiImgCache[vid]=img;
+    cb(img);
+  }).catch(function(){wikiImgCache[vid]=null;cb(null);});
+}
+
 
 function wmoEmoji(c){
   if(c===0)return{e:'&#9728;',d:'Clear'};
@@ -3371,16 +3388,29 @@ function openVenueCard(v){
   document.getElementById('venue-card-hero-title').textContent=v.name;
   var zEl=document.getElementById('venue-card-hero-zone');
   zEl.textContent=v.zone; zEl.style.background=c+'90';
-  var img=document.getElementById('venue-card-hero-img');
-  img.classList.remove('loaded');
+  var imgEl=document.getElementById('venue-card-hero-img');
+  imgEl.classList.remove('loaded');
+  var heroDiv=document.getElementById('venue-card-hero');
+  function setHeroImg(src){
+    if(src){
+      imgEl.style.display='';
+      imgEl.onload=function(){imgEl.classList.add('loaded');};
+      imgEl.onerror=function(){imgEl.style.display='none';heroDiv.style.background='linear-gradient(135deg,'+c+'50,#1a2535)';};
+      imgEl.src=src;
+      heroDiv.style.background='linear-gradient(135deg,#2d4a5a 0%,#1a2535 100%)';
+    } else {
+      imgEl.style.display='none';
+      heroDiv.style.background='linear-gradient(135deg,'+c+'50,#1a2535)';
+    }
+  }
   if(meta.img){
-    img.style.display='';
-    img.onload=function(){img.classList.add('loaded');};
-    img.onerror=function(){img.style.display='none';};
-    img.src=meta.img;
+    setHeroImg(meta.img);
   } else {
-    img.style.display='none';
-    document.getElementById('venue-card-hero').style.background='linear-gradient(135deg,'+c+'60,#1a2535)';
+    imgEl.style.display='none';
+    heroDiv.style.background='linear-gradient(135deg,'+c+'50,#1a2535)';
+    fetchWikiImage(v.id,meta.wiki||'',function(src){
+      if(src){meta.img=src;setHeroImg(src);}
+    });
   }
 
   // Stats
