@@ -964,6 +964,7 @@ body.dark-map .leg-row{border-top:1px solid #2d3748;}
     <div class="ltr" onclick="togLyr('zones')"><div class="tgl on" id="tg-zones"></div><span class="ltl">Zone Boundaries</span></div>
     <div class="ltr" onclick="togLyr('villages')"><div class="tgl on" id="tg-villages"></div><span class="ltl">Athlete Villages</span></div>
     <div class="ltr" onclick="togLyr('transport')"><div class="tgl on" id="tg-transport"></div><span class="ltl">Transport Routes</span></div>
+    <div class="ltr" onclick="togLyr('accommodation')"><div class="tgl on" id="tg-accommodation"></div><span class="ltl">AOC Accommodation</span></div>
     <div class="dvd" id="sdv" style="display:none"></div>
     <div class="slbl" id="slb" style="display:none">Selected</div>
     <div id="selcard"><div id="selinn">
@@ -1504,6 +1505,64 @@ var SCHEDULE={
   }
 };
 
+
+// ── AOC Accommodation Sites ────────────────────────────────────────────────
+var AOC_SITES=[
+  {id:"a1", name:"Olympic Village (UCLA)",       sub:"Westwood, Los Angeles",
+   athletes:266, officials:154, tbt:72,  total:492,
+   lat:34.0700, lng:-118.4441, color:"#e8a827",
+   note:"Main Olympic Village — Primary AOC accommodation hub"},
+  {id:"a2", name:"CSU-LB Performance Centre",    sub:"Long Beach",
+   athletes:202, officials:96,  tbt:70,  total:338,
+   lat:33.7838, lng:-118.1141, color:"#2d6a6a",
+   note:"California State University Long Beach — Performance & recovery centre"},
+  {id:"a3", name:"DoubleTree (El Segundo)",       sub:"El Segundo, LA",
+   athletes:41,  officials:20,  tbt:1,   total:62,
+   lat:33.9119, lng:-118.3926, color:"#4a9090",
+   note:"Near LAX — Airport proximity accommodation"},
+  {id:"a4", name:"Crowne Plaza (San Pedro)",      sub:"San Pedro, Los Angeles",
+   athletes:12,  officials:13,  tbt:1,   total:26,
+   lat:33.7361, lng:-118.2922, color:"#4a9090",
+   note:"Harbour-side — close to Long Beach venues"},
+  {id:"a5", name:"Kappa Kappa Gamma (UCLA)",      sub:"Westwood, Los Angeles",
+   athletes:0,   officials:0,   tbt:36,  total:36,
+   lat:34.0685, lng:-118.4455, color:"#6b46a0",
+   note:"UCLA campus — TBT staff accommodation only"},
+  {id:"a6", name:"Sheraton Fairplex (Pomona)",    sub:"Pomona",
+   athletes:30,  officials:14,  tbt:1,   total:45,
+   lat:34.0551, lng:-117.7524, color:"#d4721a",
+   note:"Adjacent to Pomona Fairplex — Cricket venue"},
+  {id:"a7", name:"Trestles Satellite Village",    sub:"San Clemente",
+   athletes:4,   officials:5,   tbt:1,   total:10,
+   lat:33.3900, lng:-117.5890, color:"#3a7d44",
+   note:"Surfing satellite village — Trestles Beach venue"},
+  {id:"a8", name:"Oklahoma CSL",                  sub:"Oklahoma City",
+   athletes:6,   officials:5,   tbt:1,   total:12,
+   lat:35.4750, lng:-97.5100,  color:"#6b46a0",
+   note:"Canoe Slalom — OKC sub-village"},
+  {id:"a9", name:"Oklahoma SFB",                  sub:"Oklahoma City",
+   athletes:15,  officials:7,   tbt:0,   total:22,
+   lat:35.4650, lng:-97.5200,  color:"#6b46a0",
+   note:"Softball — OKC sub-village"},
+  {id:"a10",name:"Satellite Village — Football W",sub:"Various (TBC)",
+   athletes:18,  officials:7,   tbt:0,   total:25,
+   lat:34.0522, lng:-118.2437, color:"#b83279",
+   note:"Women's Football satellite village — location TBC"},
+  {id:"a11",name:"Satellite Village — Football M",sub:"Various (TBC)",
+   athletes:18,  officials:7,   tbt:0,   total:25,
+   lat:34.1613, lng:-118.1676, color:"#b83279",
+   note:"Men's Football satellite village — location TBC"},
+  {id:"a12",name:"Satellite Village — MTB",       sub:"Mountain Bike venue",
+   athletes:1,   officials:1,   tbt:0,   total:2,
+   lat:34.2000, lng:-118.5000, color:"#3a7d44",
+   note:"Mountain Bike satellite village"},
+  {id:"a13",name:"Zeta Beta Tau (USC)",            sub:"Downtown Los Angeles",
+   athletes:0,   officials:0,   tbt:1,   total:1,
+   lat:34.0224, lng:-118.2851, color:"#64748b",
+   note:"USC campus — single TBT staff"}
+];
+var AOC_TOTAL={athletes:613,officials:329,tbt:184,total:1126};
+
 var ZC={};
 ZONE_GROUPS.forEach(function(g){g.zones.forEach(function(z){ZC[z]=g.color;});});
 var TLAB={stadium:"Stadium",arena:"Arena",aquatics:"Aquatics",outdoor:"Outdoor",convention:"Convention"};
@@ -1553,6 +1612,65 @@ VILLAGES.forEach(function(v){
   L.marker([v.lat,v.lng],{icon:icon,zIndexOffset:900})
    .bindPopup('<div class="pu"><div class="put" style="color:'+v.color+'">ATHLETE VILLAGE</div><div class="pun">'+v.name+'</div><div class="putg"><span class="ptg" style="background:'+v.color+'20;color:'+v.color+'">'+v.sub+'</span></div><div class="puno">'+v.note+'</div></div>',{maxWidth:290})
    .addTo(vLG);
+});
+
+// AOC Accommodation Layer
+var aocLG=L.layerGroup().addTo(map);
+lyrOn['accommodation']=true;
+
+AOC_SITES.forEach(function(site){
+  var sz=Math.max(32, Math.min(52, 28 + Math.round(site.total/30)));
+  var icon=L.divIcon({
+    html:'<div style="position:relative;width:'+sz+'px;height:'+sz+'px">'+
+      '<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+site.color+
+      ';border:3px solid #fff;display:flex;align-items:center;justify-content:center;'+
+      'box-shadow:0 2px 10px rgba(0,0,0,0.25);flex-direction:column;cursor:pointer">'+
+      '<div style="font-size:'+(sz>40?13:11)+'px;font-weight:900;color:#fff;line-height:1">'+site.total+'</div>'+
+      '<div style="font-size:7px;color:rgba(255,255,255,0.85);line-height:1;letter-spacing:0.5px">PPL</div>'+
+      '</div></div>',
+    className:'',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],popupAnchor:[0,-(sz/2+4)]
+  });
+  var pct_ath=site.total>0?Math.round(site.athletes/site.total*100):0;
+  var pct_off=site.total>0?Math.round(site.officials/site.total*100):0;
+  var pct_tbt=site.total>0?Math.round(site.tbt/site.total*100):0;
+  var popup='<div class="pu">'+
+    '<div class="put" style="color:'+site.color+'">🏨 AOC Accommodation</div>'+
+    '<div class="pun">'+site.name+'</div>'+
+    '<div class="putg"><span class="ptg" style="background:'+site.color+'20;color:'+site.color+'">'+site.sub+'</span></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:10px 0 8px;text-align:center">'+
+      '<div style="background:#f7f4f0;border-radius:6px;padding:6px 4px">'+
+        '<div style="font-size:18px;font-weight:800;color:#2d3748">'+site.total+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase;letter-spacing:0.8px">Total</div>'+
+      '</div>'+
+      '<div style="background:#2d6a6a18;border-radius:6px;padding:6px 4px">'+
+        '<div style="font-size:18px;font-weight:800;color:#2d6a6a">'+(site.athletes||'—')+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase;letter-spacing:0.8px">Athletes</div>'+
+      '</div>'+
+      '<div style="background:#d4721a18;border-radius:6px;padding:6px 4px">'+
+        '<div style="font-size:18px;font-weight:800;color:#d4721a">'+(site.officials||'—')+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase;letter-spacing:0.8px">Officials</div>'+
+      '</div>'+
+      '<div style="background:#6b46a018;border-radius:6px;padding:6px 4px">'+
+        '<div style="font-size:18px;font-weight:800;color:#6b46a0">'+(site.tbt||'—')+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase;letter-spacing:0.8px">TBT</div>'+
+      '</div>'+
+    '</div>'+
+    // Bar chart
+    '<div style="height:8px;border-radius:4px;overflow:hidden;display:flex;margin-bottom:6px">'+
+      '<div style="width:'+pct_ath+'%;background:#2d6a6a"></div>'+
+      '<div style="width:'+pct_off+'%;background:#d4721a"></div>'+
+      '<div style="width:'+pct_tbt+'%;background:#6b46a0"></div>'+
+    '</div>'+
+    '<div style="display:flex;gap:8px;font-size:9px;color:#718096;margin-bottom:6px">'+
+      '<span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:50%;background:#2d6a6a;display:inline-block"></span>Athletes '+pct_ath+'%</span>'+
+      '<span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:50%;background:#d4721a;display:inline-block"></span>Officials '+pct_off+'%</span>'+
+      '<span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:50%;background:#6b46a0;display:inline-block"></span>TBT '+pct_tbt+'%</span>'+
+    '</div>'+
+    (site.note?'<div class="puno">'+site.note+'</div>':'')+
+  '</div>';
+  L.marker([site.lat,site.lng],{icon:icon,zIndexOffset:800})
+   .bindPopup(popup,{maxWidth:300})
+   .addTo(aocLG);
 });
 
 mLG=L.layerGroup().addTo(map);
@@ -1613,7 +1731,7 @@ function togLyr(name){
   lyrOn[name]=!lyrOn[name];
   var t=document.getElementById('tg-'+name);
   t.className='tgl '+(lyrOn[name]?'on':'off');
-  var lg={zones:zLG,villages:vLG,transport:tLG}[name];
+  var lg={zones:zLG,villages:vLG,transport:tLG,accommodation:aocLG}[name];
   if(lyrOn[name])map.addLayer(lg); else map.removeLayer(lg);
 }
 
@@ -1732,6 +1850,33 @@ function buildTL(){
   var dv=document.createElement('div');dv.className='tr';
   dv.innerHTML='<span style="font-size:11px;color:#718096;flex:1">Village</span><span style="font-size:10px;color:#a0aec0">'+VILLAGES.length+'</span>';
   el.appendChild(dv);
+  var da=document.createElement('div');da.className='tr';
+  da.innerHTML='<span style="font-size:11px;color:#718096;flex:1">AOC Sites</span><span style="font-size:10px;color:#a0aec0">'+AOC_SITES.length+'</span>';
+  el.appendChild(da);
+  // AOC summary card
+  var sb2=document.getElementById('sb');
+  var card=document.createElement('div');
+  card.style.cssText='margin:8px 12px 4px;background:#f0ede8;border-radius:8px;padding:10px 11px;border-left:3px solid #2d4a5a';
+  card.innerHTML='<div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:#a0aec0;text-transform:uppercase;margin-bottom:7px">AOC Delegation</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">'+
+      '<div style="text-align:center;background:#fff;border-radius:5px;padding:5px 2px">'+
+        '<div style="font-size:16px;font-weight:800;color:#2d4a5a">'+AOC_TOTAL.total+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase">Total</div>'+
+      '</div>'+
+      '<div style="text-align:center;background:#2d6a6a18;border-radius:5px;padding:5px 2px">'+
+        '<div style="font-size:16px;font-weight:800;color:#2d6a6a">'+AOC_TOTAL.athletes+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase">Athletes</div>'+
+      '</div>'+
+      '<div style="text-align:center;background:#d4721a18;border-radius:5px;padding:5px 2px">'+
+        '<div style="font-size:16px;font-weight:800;color:#d4721a">'+AOC_TOTAL.officials+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase">Officials</div>'+
+      '</div>'+
+      '<div style="text-align:center;background:#6b46a018;border-radius:5px;padding:5px 2px">'+
+        '<div style="font-size:16px;font-weight:800;color:#6b46a0">'+AOC_TOTAL.tbt+'</div>'+
+        '<div style="font-size:8px;color:#a0aec0;text-transform:uppercase">TBT</div>'+
+      '</div>'+
+    '</div>';
+  sb2.appendChild(card);
 }
 
 function buildVL(venues){
@@ -1884,6 +2029,7 @@ function filterStopDrop(i,val){
   }).slice(0,6);
   // Also add villages
   var vmatches=VILLAGES.filter(function(v){return v.name.toLowerCase().indexOf(q)>=0||v.sub.toLowerCase().indexOf(q)>=0;}).slice(0,2);
+  var amatches=AOC_SITES.filter(function(v){return v.name.toLowerCase().indexOf(q)>=0||v.sub.toLowerCase().indexOf(q)>=0;}).slice(0,3);
   drop.innerHTML='';
   matches.forEach(function(v){
     var c=ZC[v.zone]||'#64748b';
@@ -1898,6 +2044,13 @@ function filterStopDrop(i,val){
     item.className='dd-item';
     item.innerHTML='<div class="dd-dot" style="background:'+v.color+'"></div><div><div style="font-weight:600">'+v.name+'</div><div style="font-size:9px;color:#a0aec0">'+v.sub+'</div></div>';
     item.onmousedown=function(){selectStop(i,{id:'v'+v.id,name:v.name,lat:v.lat,lng:v.lng,color:v.color});};
+    drop.appendChild(item);
+  });
+  amatches.forEach(function(v){
+    var item=document.createElement('div');
+    item.className='dd-item';
+    item.innerHTML='<div class="dd-dot" style="background:'+v.color+'"></div><div><div style="font-weight:600">🏨 '+v.name+'</div><div style="font-size:9px;color:#a0aec0">'+v.sub+' · '+v.total+' ppl</div></div>';
+    item.onmousedown=function(){selectStop(i,{id:v.id,name:v.name,lat:v.lat,lng:v.lng,color:v.color});};
     drop.appendChild(item);
   });
   if(drop.children.length>0)drop.classList.add('show');
@@ -1942,6 +2095,10 @@ map.on('click',function(e){
   VILLAGES.forEach(function(v){
     var d=Math.pow(v.lat-lat,2)+Math.pow(v.lng-lng,2);
     if(d<bestDist){bestDist=d;best={id:'vil_'+v.id,name:v.name,lat:v.lat,lng:v.lng,color:v.color};}
+  });
+  AOC_SITES.forEach(function(v){
+    var d=Math.pow(v.lat-lat,2)+Math.pow(v.lng-lng,2);
+    if(d<bestDist){bestDist=d;best={id:v.id,name:'🏨 '+v.name,lat:v.lat,lng:v.lng,color:v.color};}
   });
   if(best&&bestDist<0.01){
     var c=best.color||(ZC[best.zone]||'#64748b');
