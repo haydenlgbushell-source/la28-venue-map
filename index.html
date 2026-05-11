@@ -970,9 +970,188 @@ body.dark-map #day-label{color:#e2e8f0;}
 body.dark-map .day-nav{background:#243044;border-color:#2d3748;color:#94a3b8;}
 body.dark-map .fav-item{color:#cbd5e1;border-color:#2d3748;}
 
+
+/* ANIMATED VENUE CARD */
+#venue-card{position:absolute;top:0;right:0;bottom:0;width:380px;background:#fff;z-index:1500;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 40px rgba(0,0,0,0.18);overflow:hidden;}
+#venue-card.open{transform:translateX(0);}
+#venue-card-hero{width:100%;height:200px;background:linear-gradient(135deg,#2d4a5a 0%,#1a2535 100%);position:relative;flex-shrink:0;overflow:hidden;}
+#venue-card-hero-img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.4s ease;}
+#venue-card-hero-img.loaded{opacity:1;}
+#venue-card-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 60%);}
+#venue-card-hero-title{position:absolute;bottom:14px;left:16px;right:48px;color:#fff;font-size:18px;font-weight:800;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,0.5);}
+#venue-card-hero-zone{position:absolute;top:12px;left:12px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:12px;color:#fff;}
+#venue-card-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,0.4);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;z-index:10;}
+#venue-card-close:hover{background:rgba(0,0,0,0.7);}
+#venue-card-body{flex:1;overflow-y:auto;padding:0;}
+.vc-section{padding:14px 18px;border-bottom:1px solid #f0ede8;}
+.vc-section:last-child{border-bottom:none;}
+.vc-section-title{font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#a0aec0;margin-bottom:10px;}
+.vc-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.vc-stat{background:#f7f4f0;border-radius:8px;padding:8px 6px;text-align:center;}
+.vc-stat-val{font-size:15px;font-weight:800;color:#2d3748;}
+.vc-stat-lbl{font-size:8px;color:#a0aec0;text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;}
+.vc-weather-row{display:flex;gap:8px;}
+.vc-weather-day{flex:1;background:#f7f4f0;border-radius:8px;padding:10px 6px;text-align:center;}
+.vc-weather-day.today{background:#2d4a5a;}
+.vc-weather-day.today .vc-weather-temp{color:#fff;}
+.vc-weather-day.today .vc-weather-lbl{color:#8fb3c5;}
+.vc-weather-icon{font-size:22px;margin-bottom:4px;}
+.vc-weather-temp{font-size:13px;font-weight:800;color:#2d3748;}
+.vc-weather-lbl{font-size:9px;color:#a0aec0;margin-top:2px;}
+.vc-weather-rain{font-size:9px;color:#4a9090;margin-top:2px;}
+.vc-session{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.vc-session-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.vc-session-date{font-size:10px;font-weight:700;color:#2d3748;}
+.vc-session-events{font-size:10px;color:#718096;margin-top:1px;}
+.vc-hotel-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f7f4f0;}
+.vc-hotel-row:last-child{border-bottom:none;}
+.vc-hotel-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.vc-hotel-name{font-size:11px;font-weight:600;color:#2d3748;flex:1;}
+.vc-hotel-dist{font-size:10px;color:#a0aec0;}
+.vc-hotel-ppl{font-size:10px;font-weight:700;color:#2d6a6a;}
+.vc-aus-row{background:linear-gradient(135deg,#1a3a1a,#2d5a2d);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+.vc-aus-sport{font-size:11px;font-weight:700;color:#90EE90;}
+.vc-aus-athletes{font-size:10px;color:#e8a827;margin-top:4px;}
+.vc-action-row{display:flex;gap:8px;padding:14px 18px;}
+.vc-action-btn{flex:1;padding:9px 6px;border-radius:8px;border:none;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:4px;}
+.vc-btn-route{background:#2d6a6a;color:#fff;}
+.vc-btn-route:hover{background:#1e4a4a;}
+.vc-btn-fav{background:#f7f4f0;color:#e8a827;border:1px solid #e2ddd8;}
+.vc-btn-share{background:#f7f4f0;color:#4a9090;border:1px solid #e2ddd8;}
+body.dark-map #venue-card{background:#1a2535;}
+body.dark-map .vc-section{border-color:#2d3748;}
+body.dark-map .vc-stat{background:#243044;}
+body.dark-map .vc-stat-val{color:#e2e8f0;}
+body.dark-map .vc-weather-day{background:#243044;}
+body.dark-map .vc-hotel-name{color:#cbd5e1;}
+
+/* ANIMATED INTRO */
+#intro-overlay{position:fixed;inset:0;z-index:9000;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease;}
+#intro-overlay.fade-out{opacity:0;pointer-events:none;}
+#intro-logo{width:80px;height:80px;border-radius:18px;background:linear-gradient(135deg,#e8a827,#d4721a);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#fff;animation:introLogoPop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.3s both;}
+@keyframes introLogoPop{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+#intro-title{font-size:36px;font-weight:900;color:#fff;letter-spacing:2px;text-align:center;animation:introFadeUp 0.6s ease 0.7s both;}
+#intro-sub{font-size:12px;font-weight:600;color:#4a9090;letter-spacing:3px;text-transform:uppercase;text-align:center;animation:introFadeUp 0.6s ease 0.9s both;}
+#intro-stats{display:flex;gap:40px;margin-top:16px;animation:introFadeUp 0.6s ease 1.1s both;}
+.intro-stat{text-align:center;}
+.intro-stat-val{font-size:28px;font-weight:900;color:#e8a827;}
+.intro-stat-lbl{font-size:10px;color:#64748b;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+#intro-bar{width:200px;height:3px;background:#1e3550;border-radius:2px;margin-top:32px;overflow:hidden;animation:introFadeUp 0.4s ease 1.3s both;}
+#intro-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#2d6a6a,#e8a827);border-radius:2px;transition:width 1.5s ease 1.5s;}
+#intro-label{font-size:11px;color:#4a6080;margin-top:10px;animation:introFadeUp 0.4s ease 1.3s both;letter-spacing:1px;}
+@keyframes introFadeUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* GAME DAY DASHBOARD */
+#gameday-panel{position:fixed;inset:0;z-index:2000;background:rgba(10,18,40,0.97);display:none;flex-direction:column;overflow:hidden;}
+#gameday-panel.open{display:flex;}
+#gameday-header{background:#2d4a5a;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,0.3);}
+#gameday-title{color:#fff;font-size:16px;font-weight:800;}
+#gameday-date{color:#8fb3c5;font-size:12px;margin-top:2px;}
+#gameday-close{background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;}
+#gameday-body{display:flex;flex:1;min-height:0;overflow:hidden;}
+#gameday-timeline{width:300px;flex-shrink:0;border-right:1px solid #1e3550;overflow-y:auto;padding:16px 0;background:#0d1628;}
+#gameday-content{flex:1;overflow-y:auto;padding:20px 24px;}
+.gd-section-hdr{font-size:9px;font-weight:700;letter-spacing:2px;color:#4a6080;text-transform:uppercase;padding:0 0;margin-bottom:12px;}
+.gd-event{padding:12px 20px;cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;}
+.gd-event:hover,.gd-event.active{background:#1a2a42;}
+.gd-event.active{border-left-color:#e8a827;}
+.gd-event-time{font-size:10px;color:#4a6080;font-weight:600;}
+.gd-event-title{font-size:13px;font-weight:700;color:#e2e8f0;margin:2px 0;}
+.gd-event-venue{font-size:10px;color:#64748b;}
+.gd-aus-badge{display:inline-flex;align-items:center;gap:3px;background:#1a3a1a;border-radius:10px;padding:2px 7px;font-size:9px;font-weight:700;color:#90EE90;margin-top:3px;}
+.gd-countdown{background:linear-gradient(135deg,#0d1f35,#1a2a42);border:1px solid #1e3550;border-radius:12px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.gd-countdown-units{display:flex;gap:12px;}
+.gd-countdown-unit{text-align:center;}
+.gd-countdown-num{font-size:32px;font-weight:900;color:#e8a827;font-variant-numeric:tabular-nums;line-height:1;}
+.gd-countdown-lbl{font-size:9px;color:#4a6080;text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+.gd-countdown-sep{font-size:28px;font-weight:900;color:#2d4a5a;line-height:1;padding-top:2px;}
+.gd-countdown-title{font-size:13px;font-weight:700;color:#e2e8f0;}
+.gd-countdown-sub{font-size:11px;color:#64748b;margin-top:3px;}
+.gd-weather-strip{display:flex;gap:10px;margin-bottom:16px;}
+.gd-weather-card{flex:1;background:#0d1f35;border:1px solid #1e3550;border-radius:10px;padding:12px 10px;text-align:center;}
+.gd-weather-venue{font-size:9px;color:#4a6080;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px;}
+.gd-weather-icon{font-size:24px;}
+.gd-weather-temp{font-size:14px;font-weight:800;color:#e8a827;margin-top:3px;}
+.gd-weather-desc{font-size:9px;color:#64748b;margin-top:2px;}
+.gd-session-card{background:#0d1f35;border:1px solid #1e3550;border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s;}
+.gd-session-card:hover{border-color:#2d6a6a;}
+.gd-session-card.aus{border-left:3px solid #e8a827;}
+.gd-session-sport{font-size:11px;font-weight:700;color:#4a9090;text-transform:uppercase;letter-spacing:0.8px;}
+.gd-session-title{font-size:14px;font-weight:700;color:#e2e8f0;margin:3px 0;}
+.gd-session-meta{display:flex;gap:12px;font-size:10px;color:#64748b;margin-top:4px;}
+.gd-session-athletes{font-size:11px;color:#e8a827;margin-top:5px;}
+.gd-day-nav{display:flex;gap:8px;align-items:center;margin-bottom:16px;}
+.gd-day-btn{background:#1a2a42;border:1px solid #1e3550;color:#94a3b8;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+.gd-day-btn:hover{background:#243044;color:#e2e8f0;}
+#gd-day-label{font-size:15px;font-weight:800;color:#e2e8f0;flex:1;}
+
 </style>
 </head>
 <body>
+<div id="intro-overlay">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+    <div id="intro-logo">LA</div>
+    <div id="intro-title">LA28 Olympic Venues</div>
+    <div id="intro-sub">AOC Operations &middot; Interactive Map</div>
+    <div id="intro-stats">
+      <div class="intro-stat"><div class="intro-stat-val">34</div><div class="intro-stat-lbl">Venues</div></div>
+      <div class="intro-stat"><div class="intro-stat-val">1,126</div><div class="intro-stat-lbl">AOC People</div></div>
+      <div class="intro-stat"><div class="intro-stat-val">16</div><div class="intro-stat-lbl">Days</div></div>
+      <div class="intro-stat"><div class="intro-stat-val">26</div><div class="intro-stat-lbl">Sports</div></div>
+    </div>
+    <div id="intro-bar"><div id="intro-bar-fill"></div></div>
+    <div id="intro-label">Loading map data...</div>
+  </div>
+</div>
+
+<div id="gameday-panel">
+  <div id="gameday-header">
+    <div><div id="gameday-title">Game Day Dashboard</div><div id="gameday-date"></div></div>
+    <button id="gameday-close" onclick="closeGameDay()">Close</button>
+  </div>
+  <div id="gameday-body">
+    <div id="gameday-timeline">
+      <div class="gd-section-hdr" style="padding:0 20px;">Today's AUS Sessions</div>
+      <div id="gd-timeline-list"></div>
+    </div>
+    <div id="gameday-content">
+      <div class="gd-day-nav">
+        <button class="gd-day-btn" onclick="gdChangeDay(-1)">&#9664;</button>
+        <div id="gd-day-label">Day 0 &mdash; Jul 14</div>
+        <button class="gd-day-btn" onclick="gdChangeDay(1)">&#9654;</button>
+      </div>
+      <div id="gd-countdown-wrap"></div>
+      <div class="gd-weather-strip" id="gd-weather-strip"></div>
+      <div class="gd-section-hdr" style="margin-top:8px">Australian Sessions</div>
+      <div id="gd-aus-sessions"></div>
+      <div class="gd-section-hdr" style="margin-top:12px">All Venues Active</div>
+      <div id="gd-all-sessions"></div>
+    </div>
+  </div>
+</div>
+
+<div id="venue-card">
+  <div id="venue-card-hero">
+    <img id="venue-card-hero-img" src="" alt="" style="display:none"/>
+    <div id="venue-card-hero-overlay"></div>
+    <div id="venue-card-hero-zone"></div>
+    <div id="venue-card-hero-title"></div>
+    <button id="venue-card-close" onclick="closeVenueCard()">&#10005;</button>
+  </div>
+  <div id="venue-card-body">
+    <div id="vc-stats-section" class="vc-section"></div>
+    <div id="vc-weather-section" class="vc-section"></div>
+    <div id="vc-aus-section" class="vc-section" style="display:none"></div>
+    <div id="vc-schedule-section" class="vc-section"></div>
+    <div id="vc-hotels-section" class="vc-section"></div>
+    <div class="vc-action-row">
+      <button class="vc-action-btn vc-btn-route" onclick="vcRouteHere()">Route here</button>
+      <button class="vc-action-btn vc-btn-fav" id="vc-fav-btn" onclick="vcToggleFav()">&#9734; Save</button>
+      <button class="vc-action-btn vc-btn-share" onclick="vcShare()">Share</button>
+    </div>
+  </div>
+</div>
+
 <div id="hdr">
   <div style="display:flex;align-items:center;gap:12px">
     <div id="logo">LA</div>
@@ -981,6 +1160,7 @@ body.dark-map .fav-item{color:#cbd5e1;border-color:#2d3748;}
   <div style="display:flex;align-items:center;gap:10px">
     <input id="srch" type="text" placeholder="Search venue or sport…" oninput="doFilter()"/>
     <button id="route-toggle-btn" onclick="toggleRoutePanel()">🗺 Route Planner</button>
+    <button onclick="openGameDay()" style="background:#e8a827;border:none;border-radius:6px;padding:6px 12px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Game Day</button>
     <button onclick="toggleScheduleMode()" style="background:#3a7d44;border:none;border-radius:6px;padding:6px 12px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">📅 Schedule</button>
     <button onclick="window.print()" style="background:#6b46a0;border:none;border-radius:6px;padding:6px 12px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">🖨 Print</button>
     <div id="bdg">34 Venues · July 14–30, 2028</div>
@@ -1012,7 +1192,7 @@ body.dark-map .fav-item{color:#cbd5e1;border-color:#2d3748;}
       <button id="clr" onclick="clearSel()">✕ Clear</button>
     </div></div>
   </div>
-  <div id="map-wrap" style="flex:1;position:relative;">
+  <div id="map-wrap" style="flex:1;position:relative;overflow:hidden;">
     <div id="map" style="width:100%;height:100%;"></div>
     <div id="style-switcher">
       <button class="style-btn active" onclick="setMapStyle('light')" id="btn-light">Light</button>
@@ -1994,7 +2174,7 @@ VENUES.forEach(function(v){
     schHtml+="</div>";
   }
   m.bindPopup('<div class="pu"><div class="put" style="color:'+c+'">'+TLAB[v.type]+'</div><div class="pun">'+v.name+'</div><div class="putg"><span class="ptg" style="background:'+c+'20;color:'+c+'">'+v.zone+'</span></div><div class="pus">'+sports+'</div>'+schHtml+'</div>',{maxWidth:320});
-  m.on('click',function(){selVenue(v.id);});
+  m.on('click',function(){openVenueCard(v);selVenue(v.id);});
   m.addTo(mLG);
   mks[v.id]=m;
 });
@@ -2921,7 +3101,374 @@ window.addEventListener('beforeprint',function(){
   document.getElementById('print-venue-table').appendChild(aocSection);
 });
 
+
+var VENUE_META={
+  1:{cap:"77,500",surf:"Track & natural grass",yr:1923,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/LA_Memorial_Coliseum_2012.jpg/640px-LA_Memorial_Coliseum_2012.jpg"},
+  2:{cap:"22,000",surf:"Natural grass",yr:2022,img:""},
+  3:{cap:"5,000",surf:"50m outdoor pool",yr:1984,img:""},
+  4:{cap:"10,258",surf:"Indoor hardwood",yr:2006,img:""},
+  5:{cap:"20,000",surf:"Indoor gymnastics",yr:1999,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Crypto_dot_com_Arena.jpg/640px-Crypto_dot_com_Arena.jpg"},
+  6:{cap:"720k sqft",surf:"Convention halls",yr:1971,img:""},
+  7:{cap:"18,000",surf:"Indoor",yr:1999,img:""},
+  8:{cap:"19,000",surf:"Indoor",yr:2019,img:""},
+  9:{cap:"56,000",surf:"Natural grass",yr:1962,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Dodger_Stadium_2.jpg/640px-Dodger_Stadium_2.jpg"},
+  10:{cap:"18 holes",surf:"Championship links",yr:1926,img:""},
+  11:{cap:"Open beach",surf:"Sand & ocean",yr:1900,img:""},
+  12:{cap:"70,240",surf:"Retractable roof",yr:2020,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/SoFi_Stadium.jpg/640px-SoFi_Stadium.jpg"},
+  13:{cap:"18,000",surf:"Indoor hardwood",yr:2024,img:""},
+  14:{cap:"17,505",surf:"Indoor",yr:1967,img:""},
+  15:{cap:"27,000",surf:"Natural grass",yr:2003,img:""},
+  16:{cap:"2,500",surf:"250m indoor velodrome",yr:2012,img:""},
+  17:{cap:"8,000",surf:"Astroturf",yr:1999,img:""},
+  18:{cap:"13,600",surf:"Indoor",yr:1978,img:""},
+  19:{cap:"400k sqft",surf:"Convention halls",yr:1978,img:""},
+  20:{cap:"Open water",surf:"2km rowing course",yr:1925,img:""},
+  21:{cap:"Open water",surf:"Ocean sailing",yr:1933,img:""},
+  22:{cap:"Open water",surf:"Ocean waterfront",yr:1950,img:""},
+  23:{cap:"91,136",surf:"Natural grass",yr:1922,img:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Rose_Bowl_Pasadena.jpg/640px-Rose_Bowl_Pasadena.jpg"},
+  24:{cap:"2,500",surf:"3m/10m diving",yr:2020,img:""},
+  25:{cap:"Open air",surf:"Dirt/concrete park",yr:1990,img:""},
+  26:{cap:"3,500",surf:"Glass-back courts",yr:2028,img:""},
+  27:{cap:"13,800",surf:"Indoor hardwood",yr:1965,img:""},
+  28:{cap:"18,336",surf:"Indoor hardwood",yr:1993,img:""},
+  29:{cap:"40,000+",surf:"Grass",yr:1922,img:""},
+  30:{cap:"26,000",surf:"Race course turf",yr:1934,img:""},
+  31:{cap:"Open range",surf:"Clay/grass",yr:1990,img:""},
+  32:{cap:"Open beach",surf:"Ocean waves",yr:1900,img:""},
+  33:{cap:"Open water",surf:"Whitewater course",yr:2010,img:""},
+  34:{cap:"Open course",surf:"Cross country",yr:2000,img:""}
+};
+
+function wmoEmoji(c){
+  if(c===0)return{e:'&#9728;',d:'Clear'};
+  if(c<=2)return{e:'&#9925;',d:'Partly cloudy'};
+  if(c===3)return{e:'&#9729;',d:'Overcast'};
+  if(c<=49)return{e:'&#127787;',d:'Foggy'};
+  if(c<=59)return{e:'&#127746;',d:'Drizzle'};
+  if(c<=69)return{e:'&#127783;',d:'Rain'};
+  if(c<=79)return{e:'&#10052;',d:'Snow'};
+  if(c<=84)return{e:'&#127783;',d:'Showers'};
+  return{e:'&#9928;',d:'Thunderstorm'};
+}
+
+var wxCache={};
+function fetchWeather(lat,lng,cb){
+  var key=Math.round(lat*100)/100+','+Math.round(lng*100)/100;
+  if(wxCache[key]){cb(wxCache[key]);return;}
+  var url='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lng+
+    '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode'+
+    '&temperature_unit=celsius&timezone=America%2FLos_Angeles&forecast_days=3';
+  fetch(url).then(function(r){return r.json();}).then(function(d){
+    wxCache[key]=d.daily;cb(d.daily);
+  }).catch(function(){cb(null);});
+}
+
+
+// ============================================================
+// ANIMATED INTRO
+// ============================================================
+function runIntro(){
+  setTimeout(function(){
+    document.getElementById('intro-bar-fill').style.width='100%';
+    document.getElementById('intro-label').textContent='Placing '+VENUES.length+' venues...';
+  },100);
+  setTimeout(function(){document.getElementById('intro-label').textContent='Ready';},2200);
+  setTimeout(function(){
+    var ov=document.getElementById('intro-overlay');
+    ov.classList.add('fade-out');
+    map.setView([34.02,-118.32],5,{animate:false});
+    setTimeout(function(){map.flyTo([34.02,-118.32],10,{duration:2.0,easeLinearity:0.25});},100);
+    setTimeout(function(){ov.style.display='none';},900);
+  },3000);
+}
+
+// ============================================================
+// ANIMATED VENUE CARD
+// ============================================================
+var vcVenue=null;
+
+function openVenueCard(v){
+  vcVenue=v;
+  var c=ZC[v.zone]||'#64748b';
+  var meta=VENUE_META[v.id]||{};
+
+  // Hero
+  document.getElementById('venue-card-hero-title').textContent=v.name;
+  var zEl=document.getElementById('venue-card-hero-zone');
+  zEl.textContent=v.zone; zEl.style.background=c+'90';
+  var img=document.getElementById('venue-card-hero-img');
+  img.classList.remove('loaded');
+  if(meta.img){
+    img.style.display='';
+    img.onload=function(){img.classList.add('loaded');};
+    img.onerror=function(){img.style.display='none';};
+    img.src=meta.img;
+  } else {
+    img.style.display='none';
+    document.getElementById('venue-card-hero').style.background='linear-gradient(135deg,'+c+'60,#1a2535)';
+  }
+
+  // Stats
+  var sEl=document.getElementById('vc-stats-section');
+  sEl.innerHTML='<div class="vc-section-title">Venue Details</div>'+
+    '<div class="vc-stat-grid">'+
+    '<div class="vc-stat"><div class="vc-stat-val">'+(meta.cap||'-')+'</div><div class="vc-stat-lbl">Capacity</div></div>'+
+    '<div class="vc-stat"><div class="vc-stat-val">'+(meta.yr||'-')+'</div><div class="vc-stat-lbl">Opened</div></div>'+
+    '<div class="vc-stat"><div class="vc-stat-val">'+v.type.charAt(0).toUpperCase()+v.type.slice(1)+'</div><div class="vc-stat-lbl">Type</div></div>'+
+    '</div>'+
+    (meta.surf?'<div style="font-size:10px;color:#718096;margin-top:8px">Surface: '+meta.surf+'</div>':'')+
+    '<div style="margin-top:8px">'+v.sports.map(function(s){
+      return '<span style="display:inline-block;background:'+c+'18;color:'+c+';font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;margin:2px 2px 0 0">'+s+'</span>';
+    }).join('')+'</div>';
+
+  // Weather
+  var wEl=document.getElementById('vc-weather-section');
+  wEl.innerHTML='<div class="vc-section-title">3-Day Forecast (Pacific Time)</div>'+
+    '<div class="vc-weather-row" id="vc-wx-days"><div style="color:#a0aec0;font-size:11px">Loading...</div></div>';
+  fetchWeather(v.lat,v.lng,function(w){
+    if(!w){document.getElementById('vc-wx-days').innerHTML='<div style="color:#a0aec0;font-size:11px">Weather unavailable</div>';return;}
+    var days=['Today','Tomorrow','Day 3'];
+    var h='';
+    for(var i=0;i<3;i++){
+      var wx=wmoEmoji(w.weathercode[i]);
+      var rain=w.precipitation_probability_max[i];
+      h+='<div class="vc-weather-day'+(i===0?' today':'')+'">'+
+        '<div class="vc-weather-lbl">'+days[i]+'</div>'+
+        '<div class="vc-weather-icon">'+wx.e+'</div>'+
+        '<div class="vc-weather-temp">'+Math.round(w.temperature_2m_max[i])+'&deg;C</div>'+
+        '<div class="vc-weather-lbl">'+wx.d+'</div>'+
+        (rain>0?'<div class="vc-weather-rain">'+rain+'% rain</div>':'')+
+        '</div>';
+    }
+    document.getElementById('vc-wx-days').innerHTML=h;
+  });
+
+  // AUS sessions
+  var ausEl=document.getElementById('vc-aus-section');
+  var aus=AUS_SCHEDULE[v.id];
+  var todayAus=aus?aus.filter(function(e){return e.day===currentDay;}):[];
+  if(todayAus.length){
+    ausEl.style.display='';
+    ausEl.innerHTML='<div class="vc-section-title">Australian Team Today</div>'+
+      todayAus.map(function(e){
+        return '<div class="vc-aus-row">'+
+          '<div class="vc-aus-sport">'+e.sport+' &mdash; '+e.session+'</div>'+
+          '<div class="vc-aus-athletes">'+e.athletes.join(', ')+'</div>'+
+          '</div>';
+      }).join('');
+  } else { ausEl.style.display='none'; }
+
+  // Schedule
+  var schEl=document.getElementById('vc-schedule-section');
+  var sch=SCHEDULE[v.id];
+  if(sch){
+    schEl.innerHTML='<div class="vc-section-title">Schedule &mdash; '+sch.dates+'</div>'+
+      sch.sessions.slice(0,6).map(function(s){
+        return '<div class="vc-session">'+
+          '<div class="vc-session-dot" style="background:'+c+'"></div>'+
+          '<div><div class="vc-session-date">'+s.date+'</div>'+
+          '<div class="vc-session-events">'+s.events+'</div></div></div>';
+      }).join('')+
+      (sch.sessions.length>6?'<div style="font-size:10px;color:#a0aec0">+'+(sch.sessions.length-6)+' more</div>':'');
+  } else {
+    schEl.innerHTML='<div class="vc-section-title">Schedule</div><div style="font-size:11px;color:#a0aec0">No schedule data</div>';
+  }
+
+  // Nearby hotels
+  var htEl=document.getElementById('vc-hotels-section');
+  var near=AOC_SITES.filter(function(h){
+    var dx=(h.lng-v.lng)*111*Math.cos(v.lat*Math.PI/180);
+    var dy=(h.lat-v.lat)*111;
+    h._d=Math.round(Math.sqrt(dx*dx+dy*dy)*10)/10;
+    return h._d<20;
+  }).sort(function(a,b){return a._d-b._d;}).slice(0,4);
+  htEl.innerHTML='<div class="vc-section-title">Nearby AOC Accommodation</div>'+
+    (near.length?near.map(function(h){
+      return '<div class="vc-hotel-row">'+
+        '<div class="vc-hotel-dot" style="background:'+h.color+'"></div>'+
+        '<div class="vc-hotel-name">'+h.name+'</div>'+
+        '<div class="vc-hotel-dist">'+h._d+'km</div>'+
+        '<div class="vc-hotel-ppl">'+h.total+' ppl</div></div>';
+    }).join(''):'<div style="font-size:11px;color:#a0aec0">No AOC hotels within 20km</div>');
+
+  // Fav
+  var fb=document.getElementById('vc-fav-btn');
+  fb.textContent=favourites.indexOf(v.id)>=0?'★ Saved':'☆ Save';
+
+  document.getElementById('venue-card').classList.add('open');
+  map.flyTo([v.lat,v.lng],Math.max(map.getZoom(),13),{duration:0.7});
+}
+
+function closeVenueCard(){
+  document.getElementById('venue-card').classList.remove('open');
+  vcVenue=null;
+}
+
+function vcRouteHere(){
+  if(!vcVenue)return;
+  closeVenueCard();
+  if(!routePanelOpen)toggleRoutePanel();
+  setTimeout(function(){
+    var idx=routeStops.length-1;
+    selectStop(idx,{id:vcVenue.id,name:vcVenue.name,lat:vcVenue.lat,lng:vcVenue.lng,color:ZC[vcVenue.zone]||'#64748b'});
+  },300);
+}
+
+function vcToggleFav(){
+  if(!vcVenue)return;
+  toggleFav(vcVenue.id);
+  document.getElementById('vc-fav-btn').textContent=favourites.indexOf(vcVenue.id)>=0?'★ Saved':'☆ Save';
+}
+
+function vcShare(){if(vcVenue)shareRoute(vcVenue.id);}
+
+// ============================================================
+// GAME DAY DASHBOARD
+// ============================================================
+var gdDay=0;
+var gdClock=null;
+
+function openGameDay(){
+  gdDay=currentDay;
+  document.getElementById('gameday-panel').classList.add('open');
+  renderGameDay(gdDay);
+}
+
+function closeGameDay(){
+  document.getElementById('gameday-panel').classList.remove('open');
+  if(gdClock){clearInterval(gdClock);gdClock=null;}
+}
+
+function gdChangeDay(d){
+  gdDay=Math.max(-2,Math.min(16,gdDay+d));
+  renderGameDay(gdDay);
+}
+
+function renderGameDay(day){
+  var info=ALL_DAYS[day+2]||{label:'Day '+day};
+  document.getElementById('gd-day-label').textContent=info.label;
+  document.getElementById('gameday-date').textContent=info.label+' · Pacific Time';
+
+  if(gdClock){clearInterval(gdClock);gdClock=null;}
+
+  // Countdown
+  var cwEl=document.getElementById('gd-countdown-wrap');
+  var nextEv=null; var nextVid=null;
+  Object.keys(AUS_SCHEDULE).forEach(function(vid){
+    AUS_SCHEDULE[vid].forEach(function(e){
+      if(e.day===day&&!nextEv){nextEv=e;nextVid=vid;}
+    });
+  });
+  var nv=nextVid?VENUES.find(function(x){return x.id===parseInt(nextVid);}):null;
+  if(nextEv&&nv){
+    cwEl.innerHTML='<div class="gd-countdown">'+
+      '<div>'+
+        '<div style="font-size:9px;color:#4a6080;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px">Next AUS Session</div>'+
+        '<div class="gd-countdown-title">'+nextEv.sport+'</div>'+
+        '<div class="gd-countdown-sub">'+nv.name+'</div>'+
+        '<div style="font-size:10px;color:#e8a827;margin-top:4px">'+nextEv.athletes.slice(0,3).join(', ')+'</div>'+
+      '</div>'+
+      '<div class="gd-countdown-units">'+
+        '<div class="gd-countdown-unit"><div class="gd-countdown-num" id="gdc-h">--</div><div class="gd-countdown-lbl">hrs</div></div>'+
+        '<div class="gd-countdown-sep">:</div>'+
+        '<div class="gd-countdown-unit"><div class="gd-countdown-num" id="gdc-m">--</div><div class="gd-countdown-lbl">min</div></div>'+
+        '<div class="gd-countdown-sep">:</div>'+
+        '<div class="gd-countdown-unit"><div class="gd-countdown-num" id="gdc-s">--</div><div class="gd-countdown-lbl">sec</div></div>'+
+      '</div>'+
+    '</div>';
+    var target=new Date('2028-07-14T10:00:00-07:00');
+    target.setDate(target.getDate()+day);
+    function tick(){
+      var diff=target-new Date(); if(diff<0)diff=0;
+      var h=Math.floor(diff/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+      var hEl=document.getElementById('gdc-h'),mEl=document.getElementById('gdc-m'),sEl=document.getElementById('gdc-s');
+      if(hEl)hEl.textContent=String(h).padStart(2,'0');
+      if(mEl)mEl.textContent=String(m).padStart(2,'0');
+      if(sEl)sEl.textContent=String(s).padStart(2,'0');
+    }
+    tick(); gdClock=setInterval(tick,1000);
+  } else {
+    cwEl.innerHTML='<div class="gd-countdown"><div style="color:#4a6080;font-size:12px">No Australian sessions this day.</div></div>';
+  }
+
+  // Weather strip
+  var wxEl=document.getElementById('gd-weather-strip'); wxEl.innerHTML='';
+  [{id:11,n:'Venice Beach'},{id:32,n:'Trestles'},{id:10,n:'Riviera Golf'},{id:1,n:'Coliseum'}].forEach(function(ov){
+    var v=VENUES.find(function(x){return x.id===ov.id;}); if(!v)return;
+    var card=document.createElement('div'); card.className='gd-weather-card';
+    card.innerHTML='<div class="gd-weather-venue">'+ov.n+'</div><div class="gd-weather-icon">...</div>';
+    wxEl.appendChild(card);
+    fetchWeather(v.lat,v.lng,function(w){
+      if(!w)return;
+      var wx=wmoEmoji(w.weathercode[0]);
+      card.innerHTML='<div class="gd-weather-venue">'+ov.n+'</div>'+
+        '<div class="gd-weather-icon">'+wx.e+'</div>'+
+        '<div class="gd-weather-temp">'+Math.round(w.temperature_2m_max[0])+'&deg;C</div>'+
+        '<div class="gd-weather-desc">'+wx.d+'</div>';
+    });
+  });
+
+  // AUS sessions
+  var ausEl=document.getElementById('gd-aus-sessions'); ausEl.innerHTML='';
+  var hasSess=false;
+  Object.keys(AUS_SCHEDULE).forEach(function(vid){
+    AUS_SCHEDULE[vid].filter(function(e){return e.day===day;}).forEach(function(e){
+      hasSess=true;
+      var v=VENUES.find(function(x){return x.id===parseInt(vid);}); if(!v)return;
+      var c=ZC[v.zone]||'#64748b';
+      var card=document.createElement('div'); card.className='gd-session-card aus';
+      card.innerHTML='<div class="gd-session-sport">'+e.sport+'</div>'+
+        '<div class="gd-session-title">'+e.session+'</div>'+
+        '<div class="gd-session-meta"><span>'+v.name+'</span><span style="color:'+c+'">'+v.zone+'</span></div>'+
+        '<div class="gd-session-athletes">'+e.athletes.join(' · ')+'</div>';
+      card.onclick=(function(vv){return function(){closeGameDay();openVenueCard(vv);};})(v);
+      ausEl.appendChild(card);
+    });
+  });
+  if(!hasSess)ausEl.innerHTML='<div style="color:#4a6080;font-size:12px;padding:8px 0">No Australian sessions this day.</div>';
+
+  // Timeline
+  var tlEl=document.getElementById('gd-timeline-list'); tlEl.innerHTML='';
+  var evs=[];
+  Object.keys(AUS_SCHEDULE).forEach(function(vid){
+    AUS_SCHEDULE[vid].filter(function(e){return e.day===day;}).forEach(function(e){evs.push({vid:parseInt(vid),e:e});});
+  });
+  if(!evs.length){
+    tlEl.innerHTML='<div style="padding:12px 20px;color:#4a6080;font-size:11px">No AUS sessions</div>';
+  } else {
+    evs.forEach(function(item,i){
+      var v=VENUES.find(function(x){return x.id===item.vid;}); if(!v)return;
+      var el=document.createElement('div');
+      el.className='gd-event'+(i===0?' active':'');
+      el.innerHTML='<div class="gd-event-time">Day '+day+'</div>'+
+        '<div class="gd-event-title">'+item.e.sport+'</div>'+
+        '<div class="gd-event-venue">'+v.name+'</div>'+
+        '<div class="gd-aus-badge">AUS: '+item.e.athletes.slice(0,2).join(', ')+'</div>';
+      el.onclick=(function(vv,el2){return function(){
+        document.querySelectorAll('.gd-event').forEach(function(x){x.classList.remove('active');});
+        el2.classList.add('active');
+        closeGameDay(); openVenueCard(vv);
+      };})(v,el);
+      tlEl.appendChild(el);
+    });
+  }
+
+  // All sessions
+  var allEl=document.getElementById('gd-all-sessions'); allEl.innerHTML='';
+  VENUES.forEach(function(v){
+    var sch=SCHEDULE[v.id]; if(!sch)return;
+    var c=ZC[v.zone]||'#64748b';
+    var card=document.createElement('div'); card.className='gd-session-card';
+    card.innerHTML='<div class="gd-session-sport" style="color:'+c+'">'+v.sports.slice(0,2).join(' · ')+'</div>'+
+      '<div class="gd-session-title">'+v.name+'</div>'+
+      '<div class="gd-session-meta"><span>'+sch.dates+'</span><span style="color:'+c+'">'+v.zone+'</span></div>';
+    card.onclick=(function(vv){return function(){closeGameDay();openVenueCard(vv);};})(v);
+    allEl.appendChild(card);
+  });
+}
+
 buildZF();buildTL();buildSB();buildVL(VENUES);
+runIntro();
 </script>
 </body>
 </html>
