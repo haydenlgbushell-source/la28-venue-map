@@ -732,6 +732,78 @@ html,body{height:100%;font-family:'Inter','Segoe UI',sans-serif;overflow:hidden}
 .ptg{font-size:9px;font-weight:600;border-radius:4px;padding:2px 7px}
 .pus{font-size:11px;color:#718096;line-height:1.7}
 .puno{font-size:10px;color:#a0aec0;margin-top:5px;font-style:italic}
+/* Map style switcher */
+#style-switcher{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  display:flex;gap:4px;z-index:1000;
+  background:rgba(255,255,255,0.95);
+  border:1px solid #e2ddd8;
+  border-radius:20px;
+  padding:4px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.12);
+}
+.style-btn{
+  padding:5px 14px;border:none;border-radius:16px;
+  font-size:11px;font-weight:600;cursor:pointer;
+  font-family:'Inter','Segoe UI',sans-serif;
+  transition:all 0.15s;color:#718096;background:transparent;
+}
+.style-btn.active{background:#2d4a5a;color:#fff;}
+.style-btn:hover:not(.active){background:#f0ede8;color:#2d3748;}
+/* Modern map attribution */
+.leaflet-control-attribution{
+  background:rgba(255,255,255,0.7)!important;
+  backdrop-filter:blur(4px);
+  font-size:9px!important;
+  border-radius:4px 0 0 0!important;
+}
+/* Smooth popup */
+.leaflet-popup-content-wrapper{
+  border-radius:12px!important;
+  box-shadow:0 8px 32px rgba(0,0,0,0.15)!important;
+}
+/* Modern zoom controls */
+.leaflet-control-zoom{
+  border:none!important;
+  box-shadow:0 2px 12px rgba(0,0,0,0.12)!important;
+}
+.leaflet-control-zoom a{
+  border-radius:8px!important;
+  border:none!important;
+  background:rgba(255,255,255,0.95)!important;
+  color:#2d4a5a!important;
+  font-weight:600!important;
+  margin-bottom:2px!important;
+  box-shadow:0 1px 4px rgba(0,0,0,0.1)!important;
+  backdrop-filter:blur(4px);
+}
+.leaflet-control-zoom a:hover{background:#2d4a5a!important;color:#fff!important;}
+/* Dark mode map text */
+body.dark-map #sb{background:#1a2535;border-right:1px solid #2d3748;}
+body.dark-map #rp{background:#1a2535;border-left:1px solid #2d3748;}
+body.dark-map .slbl{color:#4a6080;}
+body.dark-map .zl{color:#94a3b8;}
+body.dark-map .zr:hover{background:#243044;}
+body.dark-map .zr.on{background:#243044;}
+body.dark-map .vnm{color:#cbd5e1;}
+body.dark-map .vr{border-bottom:1px solid #2d3748;}
+body.dark-map .vr:hover{background:#243044;}
+body.dark-map .vr.sel{background:#243044;}
+body.dark-map #rph{border-bottom:1px solid #2d3748;color:#4a6080;}
+body.dark-map .zc{background:#243044;}
+body.dark-map #selinn{background:#243044;border-color:#2d3748;}
+body.dark-map #snm{color:#e2e8f0;}
+body.dark-map #sspt{color:#94a3b8;}
+body.dark-map .dvd{border-color:#2d3748;}
+body.dark-map #stbar{background:rgba(10,18,30,0.95);}
+body.dark-map .leaflet-popup-content-wrapper{background:#1a2535!important;border-color:#2d3748!important;}
+body.dark-map .pun{color:#e2e8f0!important;}
+body.dark-map .pus{color:#94a3b8!important;}
+body.dark-map .put{opacity:0.9;}
+body.dark-map #style-switcher{background:rgba(26,37,53,0.95);border-color:#2d3748;}
+body.dark-map .style-btn{color:#64748b;}
+body.dark-map .style-btn.active{background:#4a9090;color:#fff;}
+body.dark-map .style-btn:hover:not(.active){background:#243044;color:#94a3b8;}
 </style>
 </head>
 <body>
@@ -762,7 +834,13 @@ html,body{height:100%;font-family:'Inter','Segoe UI',sans-serif;overflow:hidden}
       <button id="clr" onclick="clearSel()">✕ Clear</button>
     </div></div>
   </div>
-  <div id="map"></div>
+  <div id="map">
+    <div id="style-switcher">
+      <button class="style-btn active" onclick="setMapStyle('light')" id="btn-light">Light</button>
+      <button class="style-btn" onclick="setMapStyle('voyager')" id="btn-voyager">Street</button>
+      <button class="style-btn" onclick="setMapStyle('dark')" id="btn-dark">Dark</button>
+    </div>
+  </div>
   <div id="rp">
     <div id="rph">Venues (<span id="vc">34</span>)</div>
     <div id="vl"></div>
@@ -1271,10 +1349,20 @@ var activeGroup=null,selId=null,mks={};
 var zLG,tLG,vLG,mLG,lyrOn={zones:true,villages:true,transport:true};
 
 var map=L.map('map',{center:[34.02,-118.32],zoom:10,zoomControl:true});
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  maxZoom:19
-}).addTo(map);
+var tileLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains:'abcd', maxZoom:19
+});
+var tileDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains:'abcd', maxZoom:19
+});
+var tileVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains:'abcd', maxZoom:19
+});
+var currentStyle='light';
+tileLight.addTo(map);
 
 zLG=L.layerGroup().addTo(map);
 ZONE_POLYS.forEach(function(z){
@@ -1508,6 +1596,20 @@ function buildSB(){
     d.innerHTML='<div class="sbd" style="background:'+g.color+'"></div>'+g.label;
     el.appendChild(d);
   });
+}
+
+function setMapStyle(style){
+  currentStyle=style;
+  map.eachLayer(function(l){if(l._url&&l._url.indexOf('carto')>=0)map.removeLayer(l);});
+  if(style==='light'){tileLight.addTo(map);document.body.classList.remove('dark-map');}
+  else if(style==='dark'){tileDark.addTo(map);document.body.classList.add('dark-map');}
+  else{tileVoyager.addTo(map);document.body.classList.remove('dark-map');}
+  // Keep overlay layers on top
+  [zLG,tLG,vLG,mLG].forEach(function(lg){
+    if(map.hasLayer(lg)){map.removeLayer(lg);map.addLayer(lg);}
+  });
+  document.querySelectorAll('.style-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('btn-'+style).classList.add('active');
 }
 
 buildZF();buildTL();buildSB();buildVL(VENUES);
