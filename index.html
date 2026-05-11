@@ -1085,6 +1085,166 @@ body.dark-map .vc-hotel-name{color:#cbd5e1;}
 .gd-day-btn:hover{background:#243044;color:#e2e8f0;}
 #gd-day-label{font-size:15px;font-weight:800;color:#e2e8f0;flex:1;}
 
+
+/* ============================================================
+   RESPONSIVE — MOBILE & TABLET
+   ============================================================ */
+
+/* Mobile bottom nav */
+#mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 56px; background: var(--header);
+  z-index: 1200; border-top: 1px solid rgba(255,255,255,0.1);
+  flex-direction: row; align-items: center; justify-content: space-around;
+}
+.mob-nav-btn {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; background: none; border: none; color: var(--sub);
+  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+  cursor: pointer; font-family: inherit; padding: 4px 8px;
+  text-transform: uppercase; min-width: 56px;
+  transition: color 0.15s;
+}
+.mob-nav-btn .mob-icon { font-size: 20px; line-height: 1; }
+.mob-nav-btn.active { color: var(--gold); }
+.mob-nav-btn:hover { color: #fff; }
+
+/* Mobile sheet panels */
+.mob-sheet {
+  position: fixed; bottom: 56px; left: 0; right: 0;
+  background: var(--card); border-radius: 16px 16px 0 0;
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.2);
+  z-index: 1100; transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 75vh; display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.mob-sheet.open { transform: translateY(0); }
+.mob-sheet-handle {
+  width: 40px; height: 4px; background: #e2ddd8;
+  border-radius: 2px; margin: 10px auto 0; flex-shrink: 0;
+}
+.mob-sheet-header {
+  padding: 12px 18px 10px; border-bottom: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; color: var(--text); flex-shrink: 0;
+}
+.mob-sheet-body { overflow-y: auto; flex: 1; }
+
+/* Map overlay toggle btn (mobile) */
+#mob-layers-toggle {
+  display: none;
+  position: absolute; top: 64px; right: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 10px;
+  font-size: 11px; font-weight: 700; color: var(--text);
+  cursor: pointer; font-family: inherit; z-index: 900;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ── Breakpoint: tablet (≤900px) ── */
+@media (max-width: 900px) {
+  /* Hide right venue list panel */
+  #rp { display: none; }
+  /* Narrow sidebar */
+  #sb { width: 160px; }
+  /* Adjust route panel / stbar */
+  #route-panel { left: 160px; right: 0; }
+  #stbar { left: 160px; right: 0; }
+  #schedule-bar { left: 160px; right: 0; }
+  /* Header — hide badge */
+  #bdg { display: none; }
+  /* Venue card narrower */
+  #venue-card { width: 320px; }
+  /* Route stops narrower */
+  #route-stops { width: 220px; }
+}
+
+/* ── Breakpoint: mobile (≤600px) ── */
+@media (max-width: 600px) {
+  /* Hide desktop sidebars entirely */
+  #sb { display: none !important; }
+  #rp { display: none !important; }
+
+  /* Header compact */
+  #hdr { padding: 0 12px; height: 50px; }
+  #htitle { font-size: 13px; }
+  #hsub { display: none; }
+  #srch { width: 140px; font-size: 11px; }
+  #route-toggle-btn, [onclick="toggleScheduleMode()"],
+  [onclick="openGameDay()"], [onclick="window.print()"] { display: none !important; }
+  #bdg { display: none; }
+
+  /* Map fills everything below header above nav */
+  #body { height: calc(100vh - 50px - 56px); }
+  #map-wrap { width: 100%; }
+
+  /* Show mobile nav */
+  #mobile-nav { display: flex; }
+
+  /* Stbar spans full width */
+  #stbar { left: 0; right: 0; bottom: 56px; font-size: 9px; }
+  #sbzs { display: none !important; }
+
+  /* Route panel full width */
+  #route-panel { left: 0; right: 0; bottom: 56px; max-height: 60vh; }
+  #route-stops { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  #route-body { flex-direction: column; }
+  #route-results { max-height: 200px; }
+
+  /* Schedule bar full width */
+  #schedule-bar { left: 0; right: 0; flex-wrap: wrap; gap: 6px; padding: 8px 12px; }
+  #day-count { display: none; }
+
+  /* Venue card — full screen on mobile */
+  #venue-card { width: 100%; border-radius: 0; }
+
+  /* Game day — full screen already, just fix padding */
+  #gameday-timeline { width: 100%; border-right: none; height: 200px; flex-shrink: 0; }
+  #gameday-body { flex-direction: column; }
+  #gameday-header { padding: 10px 16px; }
+  #gameday-title { font-size: 14px; }
+  .gd-countdown { flex-direction: column; gap: 12px; }
+  .gd-weather-strip { overflow-x: auto; flex-wrap: nowrap; }
+  .gd-weather-card { min-width: 90px; }
+
+  /* Intro overlay */
+  #intro-title { font-size: 24px; }
+  #intro-stats { gap: 20px; }
+  .intro-stat-val { font-size: 22px; }
+
+  /* Style switcher */
+  #style-switcher { top: 8px; }
+  .style-btn { padding: 4px 10px; font-size: 10px; }
+
+  /* Zoom controls */
+  .leaflet-control-zoom { margin-right: 8px !important; margin-bottom: 70px !important; }
+
+  /* Mobile layers toggle */
+  #mob-layers-toggle { display: block; }
+
+  /* Print hidden on mobile */
+  @media print { #mobile-nav { display: none; } }
+}
+
+/* ── Breakpoint: small mobile (≤380px) ── */
+@media (max-width: 380px) {
+  #srch { width: 110px; }
+  #intro-title { font-size: 20px; }
+  #intro-stats { gap: 14px; }
+  .intro-stat-val { font-size: 18px; }
+  .mob-nav-btn { min-width: 44px; font-size: 8px; }
+  .mob-nav-btn .mob-icon { font-size: 18px; }
+}
+
+/* Dark mode mobile nav */
+body.dark-map #mobile-nav { background: #0d1628; border-top: 1px solid #1e3550; }
+body.dark-map .mob-nav-btn { color: #4a6080; }
+body.dark-map .mob-nav-btn.active { color: var(--gold); }
+body.dark-map .mob-sheet { background: #1a2535; }
+body.dark-map .mob-sheet-handle { background: #2d3748; }
+body.dark-map .mob-sheet-header { color: #e2e8f0; border-color: #2d3748; }
+
 </style>
 </head>
 <body>
@@ -3469,6 +3629,235 @@ function renderGameDay(day){
 
 buildZF();buildTL();buildSB();buildVL(VENUES);
 runIntro();
+
+// ============================================================
+// MOBILE NAV
+// ============================================================
+var mobActiveSheet = null;
+var isMobile = function() { return window.innerWidth <= 600; };
+
+function mobNav(tab) {
+  // Update nav button states
+  ['map','venues','layers','route'].forEach(function(t) {
+    var btn = document.getElementById('mob-'+t+'-btn');
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+
+  var sheets = ['mob-venues-sheet','mob-layers-sheet'];
+
+  if (tab === 'map') {
+    // Close all sheets, close route panel
+    sheets.forEach(function(s) {
+      var el = document.getElementById(s);
+      if (el) el.classList.remove('open');
+    });
+    if (routePanelOpen) toggleRoutePanel();
+    mobActiveSheet = null;
+    return;
+  }
+
+  if (tab === 'route') {
+    sheets.forEach(function(s) {
+      var el = document.getElementById(s);
+      if (el) el.classList.remove('open');
+    });
+    mobActiveSheet = null;
+    if (!routePanelOpen) toggleRoutePanel();
+    return;
+  }
+
+  var sheetId = tab === 'venues' ? 'mob-venues-sheet' : 'mob-layers-sheet';
+  var sheet = document.getElementById(sheetId);
+  if (!sheet) return;
+
+  // Toggle sheet
+  var isOpen = sheet.classList.contains('open');
+  sheets.forEach(function(s) {
+    var el = document.getElementById(s);
+    if (el) el.classList.remove('open');
+  });
+  if (!isOpen) {
+    sheet.classList.add('open');
+    mobActiveSheet = sheetId;
+    if (tab === 'venues') buildMobVenues();
+    if (tab === 'layers') buildMobLayers();
+  } else {
+    mobActiveSheet = null;
+    document.getElementById('mob-map-btn').classList.add('active');
+    document.getElementById('mob-'+tab+'-btn').classList.remove('active');
+  }
+}
+
+function buildMobVenues() {
+  var el = document.getElementById('mob-venues-body');
+  if (!el) return;
+  el.innerHTML = '';
+  // Search bar
+  var srch = document.createElement('div');
+  srch.style.cssText = 'padding:10px 16px;border-bottom:1px solid var(--border)';
+  srch.innerHTML = '<input placeholder="Search venue or sport..." ' +
+    'style="width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;outline:none;background:var(--bg)" ' +
+    'oninput="mobFilterVenues(this.value)"/>';
+  el.appendChild(srch);
+  var list = document.createElement('div');
+  list.id = 'mob-venue-list';
+  el.appendChild(list);
+  mobFilterVenues('');
+}
+
+function mobFilterVenues(q) {
+  var el = document.getElementById('mob-venue-list');
+  if (!el) return;
+  el.innerHTML = '';
+  var filtered = VENUES.filter(function(v) {
+    return !q || v.name.toLowerCase().indexOf(q.toLowerCase()) >= 0 ||
+      v.sports.some(function(s) { return s.toLowerCase().indexOf(q.toLowerCase()) >= 0; });
+  });
+  filtered.forEach(function(v) {
+    var c = ZC[v.zone] || '#64748b';
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer';
+    row.innerHTML =
+      '<div style="width:28px;height:28px;border-radius:6px;background:'+c+'18;border:1.5px solid '+c+'55;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:'+c+';flex-shrink:0">'+v.id+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:13px;font-weight:600;color:var(--text)">'+v.name+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:1px">'+v.sports.slice(0,2).join(' &middot; ')+'</div>'+
+      '</div>'+
+      '<div style="font-size:9px;font-weight:700;background:'+c+'18;color:'+c+';padding:3px 8px;border-radius:10px;white-space:nowrap">'+v.zone+'</div>';
+    row.onclick = function() {
+      // Close sheet, fly to venue, open card
+      document.getElementById('mob-venues-sheet').classList.remove('open');
+      document.getElementById('mob-map-btn').classList.add('active');
+      document.getElementById('mob-venues-btn').classList.remove('active');
+      map.flyTo([v.lat, v.lng], 14, {duration: 0.8});
+      setTimeout(function() { openVenueCard(v); }, 400);
+    };
+    el.appendChild(row);
+  });
+}
+
+function buildMobLayers() {
+  var el = document.getElementById('mob-layers-body');
+  if (!el) return;
+  el.innerHTML = '';
+
+  // Zone filter
+  var zSection = document.createElement('div');
+  zSection.style.cssText = 'padding:10px 16px 6px;font-size:9px;font-weight:700;letter-spacing:1.8px;color:var(--light);text-transform:uppercase;';
+  zSection.textContent = 'Filter by Zone';
+  el.appendChild(zSection);
+
+  [{label:'All Zones',color:'#2d6a6a',key:null}].concat(ZONE_GROUPS).forEach(function(g) {
+    var on = g.key === activeGroup;
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;border-left:3px solid '+(on?g.color:'transparent');
+    row.innerHTML =
+      '<div style="width:10px;height:10px;border-radius:50%;background:'+g.color+';flex-shrink:0"></div>'+
+      '<span style="font-size:13px;color:var(--text);flex:1;font-weight:'+(on?'700':'400')+'">'+g.label+'</span>';
+    row.onclick = (function(k) { return function() {
+      setGrp(k === activeGroup ? null : k);
+      buildMobLayers();
+    }; })(g.key || null);
+    el.appendChild(row);
+  });
+
+  // Layer toggles
+  var lSection = document.createElement('div');
+  lSection.style.cssText = 'padding:12px 16px 6px;font-size:9px;font-weight:700;letter-spacing:1.8px;color:var(--light);text-transform:uppercase;border-top:1px solid var(--border);margin-top:6px;';
+  lSection.textContent = 'Map Layers';
+  el.appendChild(lSection);
+
+  var layerDefs = [
+    {key:'zones',label:'Zone Boundaries'},
+    {key:'villages',label:'Athlete Villages'},
+    {key:'transport',label:'Transport Routes'},
+    {key:'accommodation',label:'AOC Accommodation'},
+    {key:'accred',label:'Accreditation Zones'},
+    {key:'parking',label:'Parking Zones'},
+    {key:'rings',label:'Distance Rings'},
+    {key:'shuttles',label:'Shuttle Routes'},
+    {key:'delegation',label:'AUS Delegation Today'},
+  ];
+  layerDefs.forEach(function(lyr) {
+    var on = lyrOn[lyr.key];
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;';
+    var tgl = '<div style="width:36px;height:20px;border-radius:10px;background:'+(on?'#2d6a6a':'#cbd5e0')+';position:relative;transition:background .2s;flex-shrink:0">'+
+      '<div style="position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:'+(on?'18px':'2px')+';transition:left .2s"></div></div>';
+    row.innerHTML = tgl + '<span style="font-size:13px;color:var(--text)">' + lyr.label + '</span>';
+    row.onclick = (function(k) { return function() {
+      togLyr(k);
+      buildMobLayers();
+    }; })(lyr.key);
+    el.appendChild(row);
+  });
+}
+
+// Close sheets when map is tapped
+if (document.addEventListener) document.addEventListener('click', function(e) {
+  if (!isMobile()) return;
+  var sheets = document.querySelectorAll('.mob-sheet');
+  var clickedSheet = false;
+  sheets.forEach(function(s) { if (s.contains(e.target)) clickedSheet = true; });
+  var clickedNav = document.getElementById('mobile-nav');
+  if (clickedNav && clickedNav.contains(e.target)) clickedSheet = true;
+  if (!clickedSheet && mobActiveSheet) {
+    document.getElementById(mobActiveSheet).classList.remove('open');
+    mobActiveSheet = null;
+    document.querySelectorAll('.mob-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('mob-map-btn').classList.add('active');
+  }
+});
+
+// Close venue card on mobile with back swipe feel (tap outside)
+var vcEl=document.getElementById('venue-card'); if(vcEl&&vcEl.addEventListener) vcEl.addEventListener('click', function(e) {
+  // Don't close if clicking inside the card
+  e.stopPropagation();
+});
+
+// Handle window resize - show/hide mobile UI
+if (window.addEventListener) window.addEventListener('resize', function() {
+  var mob = isMobile();
+  var mobNav = document.getElementById('mobile-nav');
+  if (mobNav) mobNav.style.display = mob ? 'flex' : 'none';
+  // Invalidate map size after resize
+  setTimeout(function() { map.invalidateSize(); }, 100);
+});
+
 </script>
+
+<!-- Mobile Bottom Navigation -->
+<div id="mobile-nav">
+  <button class="mob-nav-btn active" id="mob-map-btn" onclick="mobNav('map')">
+    <span class="mob-icon">&#127758;</span>Map
+  </button>
+  <button class="mob-nav-btn" id="mob-venues-btn" onclick="mobNav('venues')">
+    <span class="mob-icon">&#127903;</span>Venues
+  </button>
+  <button class="mob-nav-btn" id="mob-layers-btn" onclick="mobNav('layers')">
+    <span class="mob-icon">&#9741;</span>Layers
+  </button>
+  <button class="mob-nav-btn" id="mob-route-btn" onclick="mobNav('route')">
+    <span class="mob-icon">&#128506;</span>Route
+  </button>
+  <button class="mob-nav-btn" id="mob-gameday-btn" onclick="openGameDay()">
+    <span class="mob-icon">&#127885;</span>Game Day
+  </button>
+</div>
+
+<!-- Mobile: Venues Sheet -->
+<div class="mob-sheet" id="mob-venues-sheet">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-header">Venues (34)</div>
+  <div class="mob-sheet-body" id="mob-venues-body"></div>
+</div>
+
+<!-- Mobile: Layers Sheet -->
+<div class="mob-sheet" id="mob-layers-sheet">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-header">Map Layers</div>
+  <div class="mob-sheet-body" id="mob-layers-body"></div>
+</div>
+
 </body>
 </html>
