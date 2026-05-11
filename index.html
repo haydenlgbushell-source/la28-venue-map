@@ -2830,9 +2830,7 @@ VENUES.forEach(function(v){
         '<span style="color:#a0aec0;font-size:10px"> ~'+dist+'km · '+h.total+' ppl</span></div>';
     }).join('')+'</div>':'';
 
-  var favBtn='<button onclick="event.stopPropagation();toggleFav('+v.id+');this.textContent=favourites.indexOf('+v.id+')>=0?'★ Saved':'☆ Save'" '+
-    'style="background:none;border:1px solid #e2ddd8;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;color:#e8a827;font-family:inherit;margin-top:6px">'+
-    (isFav?'★ Saved':'☆ Save')+'</button>';
+  var favBtn='<button onclick="toggleFav('+v.id+')" style="background:none;border:1px solid #e2ddd8;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;color:#e8a827;font-family:inherit;margin-top:6px">'+(isFav?'\u2605 Saved':'\u2606 Save')+'</button>';
 
   var shareBtn='<button onclick="shareRoute('+v.id+')" style="background:none;border:1px solid #e2ddd8;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;color:#4a9090;font-family:inherit;margin-top:6px;margin-left:4px">🔗 Route here</button>';
 
