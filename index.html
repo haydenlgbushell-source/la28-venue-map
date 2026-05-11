@@ -734,13 +734,17 @@ html,body{height:100%;font-family:'Inter','Segoe UI',sans-serif;overflow:hidden}
 .puno{font-size:10px;color:#a0aec0;margin-top:5px;font-style:italic}
 /* Map style switcher */
 #style-switcher{
-  position:absolute;top:12px;left:50%;transform:translateX(-50%);pointer-events:all;
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);pointer-events:all;
   display:flex;gap:4px;z-index:1000;
   background:rgba(255,255,255,0.95);
   border:1px solid #e2ddd8;
   border-radius:20px;
   padding:4px;
   box-shadow:0 2px 12px rgba(0,0,0,0.12);
+}
+/* Mobile: move above bottom nav */
+@media (max-width:600px){
+  #style-switcher{bottom:64px;}
 }
 .style-btn{
   padding:5px 14px;border:none;border-radius:16px;
@@ -3171,6 +3175,7 @@ VENUES.forEach(function(v){
     }).join('')+'</div>':'';
 
   var favBtn='<button onclick="toggleFav('+v.id+')" style="background:none;border:1px solid #e2ddd8;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;color:#e8a827;font-family:inherit;margin-top:6px">'+(isFav?'\u2605 Saved':'\u2606 Save')+'</button>';
+  var detailBtn='<button onclick="openVenueCard(VENUES.find(function(x){return x.id==='+v.id+';}));map.closePopup();" style="background:#2d4a5a;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#fff;font-family:inherit;margin-top:6px;margin-left:4px">Full Details &#9654;</button>';
 
   var shareBtn='<button onclick="shareRoute('+v.id+')" style="background:none;border:1px solid #e2ddd8;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;color:#4a9090;font-family:inherit;margin-top:6px;margin-left:4px">🔗 Route here</button>';
 
@@ -3185,7 +3190,7 @@ VENUES.forEach(function(v){
     '<div class="pus">'+sports+'</div>'+
     schHtml+
     hotelHtml+
-    '<div style="margin-top:6px">'+favBtn+shareBtn+'</div>'+
+    '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">'+detailBtn+favBtn+shareBtn+'</div>'+
     '</div>',
     {maxWidth:320}
   );
