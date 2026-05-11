@@ -803,7 +803,143 @@ body.dark-map .put{opacity:0.9;}
 body.dark-map #style-switcher{background:rgba(26,37,53,0.95);border-color:#2d3748;}
 body.dark-map .style-btn{color:#64748b;}
 body.dark-map .style-btn.active{background:#4a9090;color:#fff;}
-body.dark-map .style-btn:hover:not(.active){background:#243044;color:#94a3b8;}
+
+/* ── Routing Panel ─────────────────────────────────── */
+#route-panel{
+  position:absolute;bottom:36px;left:192px;right:224px;
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(8px);
+  border-top:1px solid #e2ddd8;
+  z-index:800;
+  display:none;
+  flex-direction:column;
+  max-height:320px;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.1);
+}
+#route-panel.show{display:flex;}
+#route-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 8px;
+  border-bottom:1px solid #e2ddd8;
+  flex-shrink:0;
+}
+#route-title{font-size:12px;font-weight:700;color:#2d3748;letter-spacing:0.3px;}
+#route-close{background:none;border:none;font-size:16px;color:#a0aec0;cursor:pointer;padding:0 2px;font-family:inherit;}
+#route-close:hover{color:#2d3748;}
+#route-body{display:flex;gap:0;flex:1;min-height:0;overflow:hidden;}
+#route-stops{
+  width:260px;flex-shrink:0;padding:10px 12px;
+  border-right:1px solid #e2ddd8;overflow-y:auto;
+}
+.stop-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;position:relative;}
+.stop-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;color:#fff;}
+.stop-input{
+  flex:1;border:1px solid #e2ddd8;border-radius:6px;
+  padding:5px 8px;font-size:11px;color:#2d3748;
+  outline:none;font-family:inherit;background:#f7f4f0;
+  cursor:pointer;
+}
+.stop-input:focus{border-color:#2d6a6a;background:#fff;}
+.stop-input.filled{background:#fff;border-color:#2d6a6a;}
+.stop-remove{background:none;border:none;color:#a0aec0;cursor:pointer;font-size:14px;padding:0;flex-shrink:0;}
+.stop-remove:hover{color:#c0392b;}
+.stop-connector{width:2px;height:10px;background:#e2ddd8;margin:0 9px;flex-shrink:0;}
+#add-stop-btn{
+  display:flex;align-items:center;gap:5px;
+  background:none;border:1px dashed #cbd5e0;border-radius:6px;
+  padding:5px 10px;font-size:11px;color:#718096;cursor:pointer;
+  font-family:inherit;width:100%;margin-top:4px;
+}
+#add-stop-btn:hover{border-color:#2d6a6a;color:#2d6a6a;background:#f0ede8;}
+#route-mode-row{display:flex;gap:4px;margin-top:8px;}
+.mode-btn{
+  flex:1;padding:5px 4px;border:1px solid #e2ddd8;border-radius:6px;
+  font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;
+  color:#718096;background:#fff;transition:all .15s;text-align:center;
+}
+.mode-btn.active{background:#2d4a5a;color:#fff;border-color:#2d4a5a;}
+.mode-btn:hover:not(.active){background:#f0ede8;border-color:#2d6a6a;color:#2d6a6a;}
+#calc-btn{
+  width:100%;margin-top:8px;padding:8px;
+  background:#2d6a6a;color:#fff;border:none;border-radius:6px;
+  font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:background .15s;
+}
+#calc-btn:hover{background:#1e4a4a;}
+#calc-btn:disabled{background:#a0aec0;cursor:not-allowed;}
+#route-results{
+  flex:1;padding:12px 16px;overflow-y:auto;
+}
+#route-summary{
+  display:none;
+}
+#route-summary.show{display:block;}
+.result-card{
+  background:#f7f4f0;border-radius:8px;padding:12px 14px;
+  margin-bottom:10px;border-left:3px solid #2d6a6a;
+}
+.result-card.driving{border-color:#2d6a6a;}
+.result-card.walking{border-color:#4a9090;}
+.result-card.cycling{border-color:#d4721a;}
+.result-total{font-size:22px;font-weight:800;color:#2d3748;margin-bottom:2px;}
+.result-label{font-size:10px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.result-meta{display:flex;gap:16px;}
+.result-meta-item{font-size:12px;color:#2d3748;}
+.result-meta-item span{display:block;font-size:9px;color:#a0aec0;text-transform:uppercase;letter-spacing:1px;}
+.leg-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-top:1px solid #e2ddd8;margin-top:6px;}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.leg-info{flex:1;}
+.leg-name{font-size:11px;color:#2d3748;font-weight:500;}
+.leg-time{font-size:10px;color:#718096;}
+.aest-note{font-size:10px;color:#4a9090;font-weight:600;margin-top:4px;}
+#route-loading{display:none;padding:20px;text-align:center;color:#718096;font-size:12px;}
+#route-loading.show{display:block;}
+#route-error{display:none;padding:12px;background:#fee;border-radius:6px;color:#c0392b;font-size:11px;}
+#route-error.show{display:block;}
+/* Dropdown autocomplete */
+.stop-dropdown{
+  position:absolute;top:28px;left:26px;right:24px;
+  background:#fff;border:1px solid #e2ddd8;border-radius:6px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:2000;
+  max-height:160px;overflow-y:auto;display:none;
+}
+.stop-dropdown.show{display:block;}
+.dd-item{
+  padding:6px 10px;font-size:11px;color:#2d3748;cursor:pointer;
+  border-bottom:1px solid #f0ede8;display:flex;align-items:center;gap:7px;
+}
+.dd-item:hover{background:#f7f4f0;}
+.dd-item:last-child{border-bottom:none;}
+.dd-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* Route button in header */
+#route-toggle-btn{
+  background:#2d6a6a;border:none;border-radius:6px;
+  padding:6px 13px;color:#fff;font-size:11px;font-weight:700;
+  cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;
+  transition:background .15s;white-space:nowrap;
+}
+#route-toggle-btn:hover{background:#1e4a4a;}
+#route-toggle-btn.active{background:#c0392b;}
+/* Routing mode click cursor */
+body.routing-mode #map{cursor:crosshair!important;}
+/* Dark mode routing */
+body.dark-map #route-panel{background:rgba(26,37,53,0.97);border-top:1px solid #2d3748;}
+body.dark-map #route-header{border-bottom:1px solid #2d3748;}
+body.dark-map #route-title{color:#e2e8f0;}
+body.dark-map .stop-input{background:#243044;border-color:#2d3748;color:#e2e8f0;}
+body.dark-map .stop-input.filled{background:#1a2535;border-color:#4a9090;}
+body.dark-map #add-stop-btn{border-color:#2d3748;color:#64748b;}
+body.dark-map .mode-btn{background:#243044;border-color:#2d3748;color:#64748b;}
+body.dark-map .mode-btn.active{background:#2d6a6a;color:#fff;}
+body.dark-map .result-card{background:#243044;}
+body.dark-map .result-total{color:#e2e8f0;}
+body.dark-map .leg-name{color:#cbd5e1;}
+body.dark-map .stop-dropdown{background:#1a2535;border-color:#2d3748;}
+body.dark-map .dd-item{color:#cbd5e1;border-color:#243044;}
+body.dark-map .dd-item:hover{background:#243044;}
+body.dark-map #route-stops{border-right:1px solid #2d3748;}
+body.dark-map .leg-row{border-top:1px solid #2d3748;}
+
 </style>
 </head>
 <body>
@@ -814,6 +950,7 @@ body.dark-map .style-btn:hover:not(.active){background:#243044;color:#94a3b8;}
   </div>
   <div style="display:flex;align-items:center;gap:10px">
     <input id="srch" type="text" placeholder="Search venue or sport…" oninput="doFilter()"/>
+    <button id="route-toggle-btn" onclick="toggleRoutePanel()">🗺 Route Planner</button>
     <div id="bdg">34 Venues · July 14–30, 2028</div>
   </div>
 </div>
@@ -849,6 +986,32 @@ body.dark-map .style-btn:hover:not(.active){background:#243044;color:#94a3b8;}
 <div id="stbar">
   <div id="sbzs" style="display:flex;gap:14px"></div>
   <span id="sbc">34 / 34 venues</span>
+</div>
+
+<!-- Route Planner Panel -->
+<div id="route-panel">
+  <div id="route-header">
+    <span id="route-title">🗺 Route Planner — Click map pins or type venue names</span>
+    <button id="route-close" onclick="toggleRoutePanel()">✕</button>
+  </div>
+  <div id="route-body">
+    <div id="route-stops">
+      <div id="stops-list"></div>
+      <div style="height:6px"></div>
+      <button id="add-stop-btn" onclick="addStop()">＋ Add stop</button>
+      <div id="route-mode-row">
+        <button class="mode-btn active" onclick="setMode('driving')" id="mode-driving">🚗 Drive</button>
+        <button class="mode-btn" onclick="setMode('walking')" id="mode-walking">🚶 Walk</button>
+        <button class="mode-btn" onclick="setMode('cycling')" id="mode-cycling">🚴 Cycle</button>
+      </div>
+      <button id="calc-btn" onclick="calcRoute()" disabled>Calculate Route</button>
+    </div>
+    <div id="route-results">
+      <div id="route-loading">⏳ Calculating route…</div>
+      <div id="route-error"></div>
+      <div id="route-summary"></div>
+    </div>
+  </div>
 </div>
 <script>
 /* @preserve
@@ -1611,6 +1774,322 @@ function setMapStyle(style){
   document.querySelectorAll('.style-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('btn-'+style).classList.add('active');
 }
+
+
+// ── Routing ────────────────────────────────────────────────────────────────
+var routeStops=[];      // [{id, name, lat, lng, color}]
+var routeMode='driving';
+var routeLayer=null;
+var routeMarkers=[];
+var routePanelOpen=false;
+var pickingStop=-1;     // index of stop being picked by map click
+
+var STOP_COLORS=['#c0392b','#2d6a6a','#d4721a','#6b46a0','#3a7d44','#b83279'];
+
+function toggleRoutePanel(){
+  routePanelOpen=!routePanelOpen;
+  var btn=document.getElementById('route-toggle-btn');
+  var panel=document.getElementById('route-panel');
+  if(routePanelOpen){
+    panel.classList.add('show');
+    btn.classList.add('active');
+    btn.textContent='✕ Close Planner';
+    if(routeStops.length===0){initStops();}
+  } else {
+    panel.classList.remove('show');
+    btn.classList.remove('active');
+    btn.innerHTML='🗺 Route Planner';
+    document.body.classList.remove('routing-mode');
+    pickingStop=-1;
+  }
+}
+
+function initStops(){
+  routeStops=[{id:null,name:'',lat:null,lng:null},{id:null,name:'',lat:null,lng:null}];
+  renderStops();
+}
+
+function addStop(){
+  if(routeStops.length>=6)return;
+  routeStops.push({id:null,name:'',lat:null,lng:null});
+  renderStops();
+}
+
+function removeStop(i){
+  if(routeStops.length<=2)return;
+  routeStops.splice(i,1);
+  renderStops();
+  updateCalcBtn();
+}
+
+function setMode(m){
+  routeMode=m;
+  ['driving','walking','cycling'].forEach(function(x){
+    document.getElementById('mode-'+x).classList.toggle('active',x===m);
+  });
+}
+
+function renderStops(){
+  var el=document.getElementById('stops-list');
+  el.innerHTML='';
+  routeStops.forEach(function(stop,i){
+    var color=STOP_COLORS[i%STOP_COLORS.length];
+    var label=i===0?'From':i===routeStops.length-1?'To':'Via '+(i);
+    // connector line
+    if(i>0){
+      var conn=document.createElement('div');
+      conn.className='stop-connector';
+      conn.style.marginLeft='9px';
+      el.appendChild(conn);
+    }
+    var row=document.createElement('div');
+    row.className='stop-row';
+    row.innerHTML=
+      '<div class="stop-num" style="background:'+color+'">'+( i===0?'A':i===routeStops.length-1?String.fromCharCode(65+i):'▸')+'</div>'+
+      '<div style="flex:1;position:relative">'+
+        '<input class="stop-input'+(stop.name?' filled':'')+'" id="stop-inp-'+i+'" '+
+          'placeholder="'+label+' — search or click pin" '+
+          'value="'+stop.name+'" '+
+          'oninput="filterStopDrop('+i+',this.value)" '+
+          'onfocus="showDrop('+i+')" '+
+          'onblur="hideDrop('+i+')" '+
+          'autocomplete="off"/>'+
+        '<div class="stop-dropdown" id="drop-'+i+'"></div>'+
+      '</div>'+
+      (routeStops.length>2?'<button class="stop-remove" onclick="removeStop('+i+')">✕</button>':'<div style="width:20px"></div>');
+    el.appendChild(row);
+
+    // Map click to pick
+    row.querySelector('.stop-input').addEventListener('focus',function(){
+      pickingStop=i;
+      document.body.classList.add('routing-mode');
+    });
+    row.querySelector('.stop-input').addEventListener('blur',function(){
+      setTimeout(function(){if(pickingStop===i){pickingStop=-1;document.body.classList.remove('routing-mode');}},200);
+    });
+  });
+  updateCalcBtn();
+}
+
+function filterStopDrop(i,val){
+  routeStops[i].name=val;
+  routeStops[i].lat=null;
+  routeStops[i].lng=null;
+  routeStops[i].id=null;
+  var drop=document.getElementById('drop-'+i);
+  if(!val||val.length<1){drop.classList.remove('show');return;}
+  var q=val.toLowerCase();
+  var matches=VENUES.filter(function(v){
+    return v.name.toLowerCase().indexOf(q)>=0||v.zone.toLowerCase().indexOf(q)>=0||v.sports.some(function(s){return s.toLowerCase().indexOf(q)>=0;});
+  }).slice(0,6);
+  // Also add villages
+  var vmatches=VILLAGES.filter(function(v){return v.name.toLowerCase().indexOf(q)>=0||v.sub.toLowerCase().indexOf(q)>=0;}).slice(0,2);
+  drop.innerHTML='';
+  matches.forEach(function(v){
+    var c=ZC[v.zone]||'#64748b';
+    var item=document.createElement('div');
+    item.className='dd-item';
+    item.innerHTML='<div class="dd-dot" style="background:'+c+'"></div><div><div style="font-weight:600">'+v.name+'</div><div style="font-size:9px;color:#a0aec0">'+v.zone+'</div></div>';
+    item.onmousedown=function(){selectStop(i,{id:v.id,name:v.name,lat:v.lat,lng:v.lng,color:c});};
+    drop.appendChild(item);
+  });
+  vmatches.forEach(function(v){
+    var item=document.createElement('div');
+    item.className='dd-item';
+    item.innerHTML='<div class="dd-dot" style="background:'+v.color+'"></div><div><div style="font-weight:600">'+v.name+'</div><div style="font-size:9px;color:#a0aec0">'+v.sub+'</div></div>';
+    item.onmousedown=function(){selectStop(i,{id:'v'+v.id,name:v.name,lat:v.lat,lng:v.lng,color:v.color});};
+    drop.appendChild(item);
+  });
+  if(drop.children.length>0)drop.classList.add('show');
+  else drop.classList.remove('show');
+}
+
+function showDrop(i){
+  var val=document.getElementById('stop-inp-'+i).value;
+  if(val.length>0)filterStopDrop(i,val);
+}
+function hideDrop(i){
+  setTimeout(function(){var d=document.getElementById('drop-'+i);if(d)d.classList.remove('show');},200);
+}
+
+function selectStop(i,venue){
+  routeStops[i]={id:venue.id,name:venue.name,lat:venue.lat,lng:venue.lng,color:venue.color};
+  var inp=document.getElementById('stop-inp-'+i);
+  if(inp){inp.value=venue.name;inp.classList.add('filled');}
+  var drop=document.getElementById('drop-'+i);
+  if(drop)drop.classList.remove('show');
+  pickingStop=-1;
+  document.body.classList.remove('routing-mode');
+  updateCalcBtn();
+}
+
+function updateCalcBtn(){
+  var filled=routeStops.filter(function(s){return s.lat!==null;}).length;
+  document.getElementById('calc-btn').disabled=filled<2;
+  document.getElementById('calc-btn').textContent=filled>=2?'Calculate Route ('+filled+' stops)':'Select at least 2 stops';
+}
+
+// Map click handler for stop picking
+map.on('click',function(e){
+  if(pickingStop<0)return;
+  // Find nearest venue to click
+  var lat=e.latlng.lat,lng=e.latlng.lng;
+  var best=null,bestDist=Infinity;
+  VENUES.forEach(function(v){
+    var d=Math.pow(v.lat-lat,2)+Math.pow(v.lng-lng,2);
+    if(d<bestDist){bestDist=d;best=v;}
+  });
+  VILLAGES.forEach(function(v){
+    var d=Math.pow(v.lat-lat,2)+Math.pow(v.lng-lng,2);
+    if(d<bestDist){bestDist=d;best={id:'vil_'+v.id,name:v.name,lat:v.lat,lng:v.lng,color:v.color};}
+  });
+  if(best&&bestDist<0.01){
+    var c=best.color||(ZC[best.zone]||'#64748b');
+    selectStop(pickingStop,{id:best.id,name:best.name,lat:best.lat,lng:best.lng,color:c});
+    // Auto-advance to next empty stop
+    var next=routeStops.findIndex(function(s,idx){return idx>pickingStop&&s.lat===null;});
+    if(next>=0){
+      pickingStop=next;
+      var inp=document.getElementById('stop-inp-'+next);
+      if(inp)inp.focus();
+    }
+  }
+});
+
+function calcRoute(){
+  var filled=routeStops.filter(function(s){return s.lat!==null;});
+  if(filled.length<2)return;
+
+  // Show loading
+  document.getElementById('route-loading').classList.add('show');
+  document.getElementById('route-summary').classList.remove('show');
+  document.getElementById('route-error').classList.remove('show');
+  document.getElementById('calc-btn').disabled=true;
+
+  // Build OSRM URL
+  var coords=filled.map(function(s){return s.lng+','+s.lat;}).join(';');
+  var osrmMode=routeMode==='cycling'?'bike':routeMode==='walking'?'foot':'driving';
+  var url='https://router.project-osrm.org/route/v1/'+osrmMode+'/'+coords+'?overview=full&geometries=geojson&steps=false';
+
+  fetch(url)
+    .then(function(r){return r.json();})
+    .then(function(data){
+      document.getElementById('route-loading').classList.remove('show');
+      document.getElementById('calc-btn').disabled=false;
+      if(!data.routes||data.routes.length===0){
+        showRouteError('No route found between these locations.');
+        return;
+      }
+      drawRoute(data.routes[0],filled);
+      showRouteResults(data.routes[0],filled);
+    })
+    .catch(function(e){
+      document.getElementById('route-loading').classList.remove('show');
+      document.getElementById('calc-btn').disabled=false;
+      showRouteError('Routing service unavailable. Check your connection.');
+    });
+}
+
+function drawRoute(route,stops){
+  // Remove old route
+  if(routeLayer){map.removeLayer(routeLayer);}
+  routeMarkers.forEach(function(m){map.removeLayer(m);});
+  routeMarkers=[];
+
+  // Draw route line
+  var coords=route.geometry.coordinates.map(function(c){return[c[1],c[0]];});
+  var color=routeMode==='driving'?'#2d6a6a':routeMode==='walking'?'#4a9090':'#d4721a';
+  routeLayer=L.polyline(coords,{color:color,weight:5,opacity:0.85,lineCap:'round',lineJoin:'round'}).addTo(map);
+
+  // Add stop markers
+  stops.forEach(function(stop,i){
+    var c=stop.color||STOP_COLORS[i%STOP_COLORS.length];
+    var label=String.fromCharCode(65+i);
+    var icon=L.divIcon({
+      html:'<div style="width:28px;height:28px;border-radius:50%;background:'+c+';border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.3)">'+label+'</div>',
+      className:'',iconSize:[28,28],iconAnchor:[14,14]
+    });
+    routeMarkers.push(L.marker([stop.lat,stop.lng],{icon:icon,zIndexOffset:2000}).addTo(map));
+  });
+
+  // Fit map to route
+  map.fitBounds(routeLayer.getBounds(),{padding:[40,40],maxZoom:14,animate:true});
+}
+
+function showRouteResults(route,stops){
+  var totalDist=route.distance;
+  var totalDur=route.duration;
+  var color=routeMode==='driving'?'#2d6a6a':routeMode==='walking'?'#4a9090':'#d4721a';
+  var modeLabel=routeMode==='driving'?'🚗 Drive':routeMode==='walking'?'🚶 Walk':'🚴 Cycle';
+
+  var distStr=totalDist>=1000?Math.round(totalDist/100)/10+' km':Math.round(totalDist)+' m';
+  var durMins=Math.round(totalDur/60);
+  var durStr=durMins>=60?(Math.floor(durMins/60)+'h '+(durMins%60)+'m'):durMins+' min';
+
+  // AEST = PT + 17 hours
+  var ptArrival=''; var aestArrival='';
+
+  var html='<div class="result-card '+routeMode+'">';
+  html+='<div class="result-total">'+durStr+'</div>';
+  html+='<div class="result-label">'+modeLabel+' · '+distStr+'</div>';
+  html+='<div class="result-meta">';
+  html+='<div class="result-meta-item">'+distStr+'<span>Distance</span></div>';
+  html+='<div class="result-meta-item">'+durStr+'<span>Est. Travel Time (PT)</span></div>';
+
+  // AEST conversion note
+  var aestMins=durMins; // same duration, just note timezone
+  html+='<div class="result-meta-item" style="color:#4a9090">+17hrs<span>PT → AEST</span></div>';
+  html+='</div>';
+
+  // Per-leg breakdown
+  if(route.legs&&route.legs.length>1){
+    html+='<div style="margin-top:8px;font-size:9px;font-weight:700;letter-spacing:1.4px;color:#a0aec0;text-transform:uppercase;margin-bottom:4px">Leg breakdown</div>';
+    route.legs.forEach(function(leg,i){
+      var legDist=leg.distance>=1000?Math.round(leg.distance/100)/10+' km':Math.round(leg.distance)+' m';
+      var legMins=Math.round(leg.duration/60);
+      var legDur=legMins>=60?(Math.floor(legMins/60)+'h '+(legMins%60)+'m'):legMins+' min';
+      var fc=stops[i].color||STOP_COLORS[i];
+      var tc=stops[i+1].color||STOP_COLORS[i+1];
+      html+='<div class="leg-row">';
+      html+='<div class="leg-dot" style="background:'+fc+'"></div>';
+      html+='<div class="leg-info">';
+      html+='<div class="leg-name">'+stops[i].name+' → '+stops[i+1].name+'</div>';
+      html+='<div class="leg-time">'+legDur+' · '+legDist+'</div>';
+      html+='</div></div>';
+    });
+  }
+
+  // Also show alternate mode estimate
+  if(routeMode==='driving'){
+    var transitEst=Math.round(durMins*1.6);
+    html+='<div class="aest-note" style="margin-top:8px;font-size:10px;color:#718096">🚇 Metro/transit est. ~'+transitEst+' min · 🚶 Walk est. ~'+Math.round(totalDist/80)+' min</div>';
+  }
+
+  html+='</div>';
+
+  // Clear route button
+  html+='<button onclick="clearRoute()" style="width:100%;padding:6px;background:none;border:1px solid #e2ddd8;border-radius:6px;font-size:11px;color:#718096;cursor:pointer;font-family:inherit;">✕ Clear route</button>';
+
+  var el=document.getElementById('route-summary');
+  el.innerHTML=html;
+  el.classList.add('show');
+}
+
+function showRouteError(msg){
+  var el=document.getElementById('route-error');
+  el.textContent='⚠ '+msg;
+  el.classList.add('show');
+}
+
+function clearRoute(){
+  if(routeLayer){map.removeLayer(routeLayer);routeLayer=null;}
+  routeMarkers.forEach(function(m){map.removeLayer(m);});
+  routeMarkers=[];
+  document.getElementById('route-summary').classList.remove('show');
+  document.getElementById('route-error').classList.remove('show');
+  initStops();
+}
+
 
 buildZF();buildTL();buildSB();buildVL(VENUES);
 </script>
